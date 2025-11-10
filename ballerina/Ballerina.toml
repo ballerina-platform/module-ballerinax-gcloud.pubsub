@@ -80,6 +80,11 @@ version = "1.66.0"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
+artifactId = "grpc-auth"
+version = "1.66.0"
+
+[[platform.java21.dependency]]
+groupId = "io.grpc"
 artifactId = "grpc-stub"
 version = "1.66.0"
 
