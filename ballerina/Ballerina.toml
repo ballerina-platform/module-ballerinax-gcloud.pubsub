@@ -178,5 +178,10 @@ groupId = "com.google.http-client"
 artifactId = "google-http-client-gson"
 version = "1.44.2"
 
+[[platform.java21.dependency]]
+groupId = "io.perfmark"
+artifactId = "perfmark-api"
+version = "0.27.0"
+
 [build-options]
 observabilityIncluded=true
