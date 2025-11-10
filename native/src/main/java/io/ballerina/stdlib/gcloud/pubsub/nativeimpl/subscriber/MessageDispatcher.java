@@ -77,8 +77,8 @@ public class MessageDispatcher {
         BObject caller = ValueCreator.createObjectValue(PubSubUtils.getModule(), "Caller");
         caller.addNativeData("ACK_REPLY_CONSUMER", consumer);
 
-        // Prepare arguments for service method
-        Object[] args = new Object[]{ballerinaMessage, true, caller, true};
+        // Prepare arguments for service method (message, caller)
+        Object[] args = new Object[]{ballerinaMessage, caller};
 
         // Execute the onMessage remote function
         executeResource(ON_MESSAGE, args, consumer);
