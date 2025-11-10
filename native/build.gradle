@@ -49,6 +49,8 @@ tasks.withType(Checkstyle) {
     exclude excludePattern
 }
 
+checkstyleMain.dependsOn(":checkstyle:downloadCheckstyleRuleFiles")
+
 spotbugsMain {
     def classLoader = plugins["com.github.spotbugs"].class.classLoader
     def SpotBugsConfidence = classLoader.findLoadedClass("com.github.spotbugs.snom.Confidence")
