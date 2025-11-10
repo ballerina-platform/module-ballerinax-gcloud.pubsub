@@ -1,0 +1,11 @@
+name: Publish release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call_workflow:
+    name: Run Publish Release Workflow
+    if: ${{ github.repository_owner == 'ballerina-platform' }}
+    uses: ballerina-platform/ballerina-library/.github/workflows/publish-release-template.yml@main
+    secrets: inherit
