@@ -139,6 +139,11 @@ artifactId = "guava"
 version = "33.2.1-jre"
 
 [[platform.java21.dependency]]
+groupId = "com.google.guava"
+artifactId = "failureaccess"
+version = "1.0.2"
+
+[[platform.java21.dependency]]
 groupId = "org.threeten"
 artifactId = "threetenbp"
 version = "1.6.9"
