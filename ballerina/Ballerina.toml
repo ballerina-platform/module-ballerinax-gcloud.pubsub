@@ -1,0 +1,52 @@
+[package]
+org = "ballerinax"
+name = "gcloud.pubsub"
+version = "1.0.0"
+authors = ["Ballerina"]
+keywords = ["pubsub", "google cloud", "messaging", "cloud", "gcp"]
+repository = "https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub"
+icon = "icon.png"
+license = ["Apache-2.0"]
+distribution = "2201.12.0"
+
+[platform.java21]
+graalvmCompatible = true
+
+[[platform.java21.dependency]]
+groupId = "io.ballerina.stdlib"
+artifactId = "gcloud.pubsub-native"
+version = "1.0.0"
+path = "../native/build/libs/gcloud.pubsub-native-1.0.0-SNAPSHOT.jar"
+
+[[platform.java21.dependency]]
+groupId = "com.google.cloud"
+artifactId = "google-cloud-pubsub"
+version = "1.132.1"
+
+[[platform.java21.dependency]]
+groupId = "com.google.api"
+artifactId = "gax"
+version = "2.52.0"
+
+[[platform.java21.dependency]]
+groupId = "com.google.api"
+artifactId = "gax-grpc"
+version = "2.52.0"
+
+[[platform.java21.dependency]]
+groupId = "com.google.auth"
+artifactId = "google-auth-library-credentials"
+version = "1.24.1"
+
+[[platform.java21.dependency]]
+groupId = "com.google.auth"
+artifactId = "google-auth-library-oauth2-http"
+version = "1.24.1"
+
+[[platform.java21.dependency]]
+groupId = "io.grpc"
+artifactId = "grpc-netty-shaded"
+version = "1.66.0"
+
+[build-options]
+observabilityIncluded=true
