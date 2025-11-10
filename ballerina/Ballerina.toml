@@ -1,7 +1,7 @@
 [package]
 org = "ballerinax"
 name = "gcloud.pubsub"
-version = "1.0.0"
+version = "0.1.0"
 authors = ["Ballerina"]
 keywords = ["pubsub", "google cloud", "messaging", "cloud", "gcp"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub"
@@ -15,8 +15,8 @@ graalvmCompatible = true
 [[platform.java21.dependency]]
 groupId = "io.ballerina.lib"
 artifactId = "gcloud.pubsub-native"
-version = "1.0.0"
-path = "../native/build/libs/gcloud.pubsub-native-1.0.0-SNAPSHOT.jar"
+version = "0.1.0"
+path = "../native/build/libs/gcloud.pubsub-native-0.1.0-SNAPSHOT.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.cloud"
