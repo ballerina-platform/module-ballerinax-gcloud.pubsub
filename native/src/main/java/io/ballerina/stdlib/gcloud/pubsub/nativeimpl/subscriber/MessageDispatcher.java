@@ -28,6 +28,7 @@ import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.ObjectType;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.utils.TypeUtils;
+import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
@@ -36,22 +37,64 @@ import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubUtils;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Message dispatcher for Google Cloud Pub/Sub listener.
  * Receives messages from Pub/Sub and dispatches them to the Ballerina service.
+ * Uses a blocking queue to ensure messages are processed in arrival order.
  */
 public class MessageDispatcher {
 
     private static final String ON_MESSAGE = "onMessage";
     private final BObject service;
     private final Runtime runtime;
+    private final BlockingQueue<MessageTask> messageQueue;
+    private final ExecutorService executorService;
+
+    /**
+     * Represents a message processing task.
+     */
+    private static class MessageTask {
+        final PubsubMessage message;
+        final AckReplyConsumer consumer;
+
+        MessageTask(PubsubMessage message, AckReplyConsumer consumer) {
+            this.message = message;
+            this.consumer = consumer;
+        }
+    }
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "BObject is from Ballerina runtime API and " +
             "needs to be stored to invoke service methods. This is an intentional design pattern.")
     public MessageDispatcher(BObject service, Runtime runtime) {
         this.service = service;
         this.runtime = runtime;
+        this.messageQueue = new LinkedBlockingQueue<>();
+        this.executorService = Executors.newSingleThreadExecutor();
+        startMessageProcessor();
+    }
+
+    /**
+     * Starts the message processor thread that processes messages from the queue.
+     */
+    @SuppressFBWarnings(value = "RV_RETURN_VALUE_IGNORED",
+            justification = "Future return value not needed for background processor thread")
+    private void startMessageProcessor() {
+        executorService.submit(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    MessageTask task = messageQueue.take();
+                    processMessage(task.message, task.consumer);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
     }
 
     /**
@@ -64,12 +107,27 @@ public class MessageDispatcher {
     }
 
     /**
-     * Handles incoming messages from Pub/Sub.
+     * Handles incoming messages from Pub/Sub by adding them to the queue.
      *
      * @param message The received Pub/Sub message
      * @param consumer The ack reply consumer
      */
     private void handleMessage(PubsubMessage message, AckReplyConsumer consumer) {
+        try {
+            messageQueue.put(new MessageTask(message, consumer));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            consumer.nack();
+        }
+    }
+
+    /**
+     * Processes a message from the queue.
+     *
+     * @param message The received Pub/Sub message
+     * @param consumer The ack reply consumer
+     */
+    private void processMessage(PubsubMessage message, AckReplyConsumer consumer) {
         // Convert Pub/Sub message to Ballerina message
         BMap<BString, Object> ballerinaMessage = convertToBallerinMessage(message);
 
@@ -93,18 +151,28 @@ public class MessageDispatcher {
      */
     private void executeResource(String function, Object[] args, AckReplyConsumer consumer) {
         ObjectType serviceType = (ObjectType) TypeUtils.getReferredType(TypeUtils.getType(service));
-        Thread.startVirtualThread(() -> {
-            Map<String, Object> properties = new HashMap<>();
-            boolean isConcurrentSafe = serviceType.isIsolated() && serviceType.isIsolated(function);
-            StrandMetadata strandMetadata = new StrandMetadata(isConcurrentSafe, properties);
+        Map<String, Object> properties = new HashMap<>();
+        boolean isConcurrentSafe = serviceType.isIsolated() && serviceType.isIsolated(function);
+        StrandMetadata strandMetadata = new StrandMetadata(isConcurrentSafe, properties);
 
-            try {
-                runtime.callMethod(service, function, strandMetadata, args);
-            } catch (Throwable e) {
-                // On error, nack the message
-                consumer.nack();
+        try {
+            runtime.callMethod(service, function, strandMetadata, args);
+        } catch (Throwable e) {
+            // On error, nack the message
+            consumer.nack();
+            if (e instanceof BError) {
+                ((BError) e).printStackTrace();
+            } else {
+                PubSubUtils.createError("Message processing failed: " + e.getMessage(), e).printStackTrace();
             }
-        });
+        }
+    }
+
+    /**
+     * Shuts down the message processor.
+     */
+    public void shutdown() {
+        executorService.shutdownNow();
     }
 
     /**
