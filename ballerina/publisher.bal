@@ -48,7 +48,7 @@ public client isolated class Publisher {
     #
     # + message - Message to be published
     # + return - A `gcloud.pubsub:Error` if the publish operation fails or else '()'
-    isolated remote function publish(PubsubMessage message) returns Error? =
+    isolated remote function publish(PubSubMessage message) returns Error? =
     @java:Method {
         'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
@@ -60,7 +60,7 @@ public client isolated class Publisher {
     #
     # + message - Message to be published
     # + return - A `gcloud.pubsub:PublishMetadata` containing the message ID and publish time or else a `gcloud.pubsub:Error`
-    isolated remote function publishWithMetadata(PubsubMessage message) returns PublishMetadata|Error =
+    isolated remote function publishWithMetadata(PubSubMessage message) returns PublishMetadata|Error =
     @java:Method {
         'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
@@ -72,7 +72,7 @@ public client isolated class Publisher {
     #
     # + messages - Array of messages to be published
     # + return - A `gcloud.pubsub:Error` if the publish operation fails or else '()'
-    isolated remote function publishBatch(PubsubMessage[] messages) returns Error? =
+    isolated remote function publishBatch(PubSubMessage[] messages) returns Error? =
     @java:Method {
         'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
@@ -84,7 +84,7 @@ public client isolated class Publisher {
     #
     # + messages - Array of messages to be published
     # + return - An array of `gcloud.pubsub:PublishMetadata` containing message IDs and publish times or else a `gcloud.pubsub:Error`
-    isolated remote function publishBatchWithMetadata(PubsubMessage[] messages) returns PublishMetadata[]|Error =
+    isolated remote function publishBatchWithMetadata(PubSubMessage[] messages) returns PublishMetadata[]|Error =
     @java:Method {
         'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;

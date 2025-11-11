@@ -53,7 +53,7 @@ listener pubsub:Listener pubsubListener = check new ("my-subscription",
 );
 
 service pubsub:Service on pubsubListener {
-    remote function onMessage(pubsub:ReceivedMessage message, pubsub:Caller caller) returns error? {
+    remote function onMessage(pubsub:SubsubMessage message, pubsub:Caller caller) returns error? {
         io:println("Received: ", check string:fromBytes(message.data));
 
         // Acknowledge the message

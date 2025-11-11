@@ -46,9 +46,12 @@ def stripBallerinaExtensionVersion(String extVersion) {
 }
 
 ballerina {
+    packageOrganization = packageOrg
     module = packageName
     langVersion = ballerinaLangVersion
-    packageOrganization = packageOrg
+    testCoverageParam = "--code-coverage --coverage-format=xml"
+    isConnector = true
+    platform = "java21"
 }
 
 configurations {
@@ -57,9 +60,14 @@ configurations {
             attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment, TargetJvmEnvironment.STANDARD_JVM))
         }
     }
+    jbalTools
+    ballerinaStdLibs
 }
 
 dependencies {
+    jbalTools("org.ballerinalang:jballerina-tools:${ballerinaLangVersion}") {
+        transitive = false
+    }
     externalJars(group: 'com.google.cloud', name: 'google-cloud-pubsub', version: "${googleCloudPubSubVersion}")
 }
 
@@ -91,3 +99,5 @@ build.dependsOn ":gcloud.pubsub-native:build"
 build.dependsOn "updateTomlFiles"
 build.dependsOn "initializeVariables"
 build.dependsOn ":gcloud.pubsub-native:jar"
+
+test.dependsOn ":gcloud.pubsub-native:build"

@@ -129,7 +129,7 @@ public class MessageDispatcher {
      */
     private void processMessage(PubsubMessage message, AckReplyConsumer consumer) {
         // Convert Pub/Sub message to Ballerina message
-        BMap<BString, Object> ballerinaMessage = convertToBallerinMessage(message);
+        BMap<BString, Object> ballerinaMessage = convertToBallerinaMessage(message);
 
         // Create Caller object
         BObject caller = ValueCreator.createObjectValue(PubSubUtils.getModule(), "Caller");
@@ -176,14 +176,14 @@ public class MessageDispatcher {
     }
 
     /**
-     * Converts a Pub/Sub message to a Ballerina ReceivedMessage record.
+     * Converts a Pub/Sub message to a Ballerina PubSubMessage record.
      *
      * @param message The Pub/Sub message
-     * @return Ballerina ReceivedMessage record
+     * @return Ballerina PubSubMessage record
      */
-    private BMap<BString, Object> convertToBallerinMessage(PubsubMessage message) {
+    private BMap<BString, Object> convertToBallerinaMessage(PubsubMessage message) {
         BMap<BString, Object> ballerinaMessage = ValueCreator.createRecordValue(
-                PubSubUtils.getModule(), "ReceivedMessage");
+                PubSubUtils.getModule(), "PubSubMessage");
 
         // Set message ID
         ballerinaMessage.put(StringUtils.fromString("messageId"),

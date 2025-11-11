@@ -38,9 +38,9 @@ public type BatchSettings record {|
 #
 # + projectId - Google Cloud project ID
 # + credentials - Authentication credentials
-# + enableBatching - Enable message batching (default: true)
+# + enableBatching - When enabled, the publisher will batch messages before sending
 # + batchSettings - Batch configuration settings
-# + enableMessageOrdering - Enable message ordering (default: false)
+# + enableMessageOrdering - When enabled, the publisher will publish messages with ordering keys
 public type PublisherConfiguration record {|
     string projectId;
     Credentials credentials?;
@@ -60,27 +60,16 @@ public type ListenerConfiguration record {|
 
 # Represents a message to be published to Google Cloud Pub/Sub.
 #
+# + messageId - Unique message identifier (Only for received messages)
 # + data - Message data as bytes
 # + attributes - Message attributes (key-value pairs)
+# + publishTime - Time when the message was published (Only for received messages)
 # + orderingKey - Ordering key for ordered delivery
-public type PubsubMessage record {|
+public type PubSubMessage record {|
+    string messageId?;
     byte[] data;
     map<string> attributes?;
-    string orderingKey?;
-|};
-
-# Represents a received message from Google Cloud Pub/Sub.
-#
-# + messageId - Unique message identifier
-# + data - Message data as bytes
-# + attributes - Message attributes (key-value pairs)
-# + publishTime - Time when the message was published
-# + orderingKey - Ordering key for ordered delivery
-public type ReceivedMessage record {|
-    string messageId;
-    byte[] data;
-    map<string> attributes?;
-    string publishTime;
+    string publishTime?;
     string orderingKey?;
 |};
 

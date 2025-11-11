@@ -109,5 +109,5 @@ public annotation PubSubServiceConfig ServiceConfig on service, class;
 
 # The Pub/Sub service type.
 public type Service distinct service object {
-    // remote function onMessage(ReceivedMessage message, Caller caller) returns error?;
+    // remote function onMessage(PubSubMessage message, Caller caller) returns error?;
 };
