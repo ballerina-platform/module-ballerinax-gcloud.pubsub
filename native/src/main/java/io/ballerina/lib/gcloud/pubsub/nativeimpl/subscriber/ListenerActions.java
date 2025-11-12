@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber;
+package io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber;
 
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -24,14 +24,13 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.pubsub.v1.ProjectSubscriptionName;
+import io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants;
+import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
 import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.Runtime;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubConstants;
-import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -39,14 +38,18 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CONFIG;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CONSUMER_SERVICES;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CREDENTIALS_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CREDENTIALS_JSON_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CREDENTIALS_PATH_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.PROJECT_ID_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.STARTED_SERVICES;
+
 /**
  * Native implementation for Google Cloud Pub/Sub Listener actions.
  */
 public class ListenerActions {
-
-    private static final String CONSUMER_SERVICES = "CONSUMER_SERVICES";
-    private static final String STARTED_SERVICES = "STARTED_SERVICES";
-
     /**
      * Initializes the Google Cloud Pub/Sub listener.
      *
@@ -58,7 +61,7 @@ public class ListenerActions {
     public static Object init(BObject listenerObject, BString subscriptionName, BMap<BString, Object> config) {
         try {
             String subscription = subscriptionName.getValue();
-            String projectId = config.getStringValue(StringUtils.fromString("projectId")).getValue();
+            String projectId = config.getStringValue(PROJECT_ID_FIELD).getValue();
 
             // Parse subscription name
             ProjectSubscriptionName subscriptionFullName;
@@ -75,7 +78,7 @@ public class ListenerActions {
             }
 
             listenerObject.addNativeData(PubSubConstants.NATIVE_SUBSCRIPTION_NAME, subscriptionFullName);
-            listenerObject.addNativeData("CONFIG", config);
+            listenerObject.addNativeData(CONFIG, config);
             listenerObject.addNativeData(CONSUMER_SERVICES, new ArrayList<BObject>());
             listenerObject.addNativeData(STARTED_SERVICES, new ArrayList<BObject>());
 
@@ -121,7 +124,7 @@ public class ListenerActions {
         try {
             ProjectSubscriptionName subscription = (ProjectSubscriptionName) listenerObject.getNativeData(
                     PubSubConstants.NATIVE_SUBSCRIPTION_NAME);
-            BMap<BString, Object> config = (BMap<BString, Object>) listenerObject.getNativeData("CONFIG");
+            BMap<BString, Object> config = (BMap<BString, Object>) listenerObject.getNativeData(CONFIG);
 
             @SuppressWarnings("unchecked")
             ArrayList<BObject> services = (ArrayList<BObject>) listenerObject.getNativeData(CONSUMER_SERVICES);
@@ -258,20 +261,17 @@ public class ListenerActions {
     // Helper methods
 
     private static GoogleCredentials getCredentials(BMap<BString, Object> config) throws IOException {
-        if (!config.containsKey(StringUtils.fromString("credentials"))) {
+        if (!config.containsKey(CREDENTIALS_FIELD)) {
             return GoogleCredentials.getApplicationDefault();
         }
 
-        BMap<BString, Object> credentials = (BMap<BString, Object>) config.get(
-                StringUtils.fromString("credentials"));
+        BMap<BString, Object> credentials = (BMap<BString, Object>) config.get(CREDENTIALS_FIELD);
 
-        if (credentials.containsKey(StringUtils.fromString("credentialsPath"))) {
-            String credentialsPath = credentials.getStringValue(
-                    StringUtils.fromString("credentialsPath")).getValue();
+        if (credentials.containsKey(CREDENTIALS_PATH_FIELD)) {
+            String credentialsPath = credentials.getStringValue(CREDENTIALS_PATH_FIELD).getValue();
             return ServiceAccountCredentials.fromStream(new FileInputStream(credentialsPath));
-        } else if (credentials.containsKey(StringUtils.fromString("credentialsJson"))) {
-            String credentialsJson = credentials.getStringValue(
-                    StringUtils.fromString("credentialsJson")).getValue();
+        } else if (credentials.containsKey(CREDENTIALS_JSON_FIELD)) {
+            String credentialsJson = credentials.getStringValue(CREDENTIALS_JSON_FIELD).getValue();
             return ServiceAccountCredentials.fromStream(
                     new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8)));
         }

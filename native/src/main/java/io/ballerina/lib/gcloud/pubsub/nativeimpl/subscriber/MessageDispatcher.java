@@ -16,12 +16,13 @@
  * under the License.
  */
 
-package io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber;
+package io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber;
 
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.pubsub.v1.PubsubMessage;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
 import io.ballerina.runtime.api.Runtime;
 import io.ballerina.runtime.api.concurrent.StrandMetadata;
 import io.ballerina.runtime.api.creators.ValueCreator;
@@ -32,7 +33,7 @@ import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubUtils;
+import io.ballerina.stdlib.time.nativeimpl.Utc;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -42,6 +43,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ACK_REPLY_CONSUMER;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ATTRIBUTES_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CALLER;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.DATA_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.MESSAGE;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.MESSAGE_ID_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ON_MESSAGE;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ORDERING_KEY_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.PUBLISH_TIME_FIELD;
+
 /**
  * Message dispatcher for Google Cloud Pub/Sub listener.
  * Receives messages from Pub/Sub and dispatches them to the Ballerina service.
@@ -49,7 +60,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class MessageDispatcher {
 
-    private static final String ON_MESSAGE = "onMessage";
     private final BObject service;
     private final Runtime runtime;
     private final BlockingQueue<MessageTask> messageQueue;
@@ -132,8 +142,8 @@ public class MessageDispatcher {
         BMap<BString, Object> ballerinaMessage = convertToBallerinaMessage(message);
 
         // Create Caller object
-        BObject caller = ValueCreator.createObjectValue(PubSubUtils.getModule(), "Caller");
-        caller.addNativeData("ACK_REPLY_CONSUMER", consumer);
+        BObject caller = ValueCreator.createObjectValue(PubSubUtils.getModule(), CALLER);
+        caller.addNativeData(ACK_REPLY_CONSUMER, consumer);
 
         // Prepare arguments for service method (message, caller)
         Object[] args = new Object[]{ballerinaMessage, caller};
@@ -176,23 +186,21 @@ public class MessageDispatcher {
     }
 
     /**
-     * Converts a Pub/Sub message to a Ballerina PubSubMessage record.
+     * Converts a Pub/Sub message to a Ballerina Pub/Sub Message record.
      *
      * @param message The Pub/Sub message
-     * @return Ballerina PubSubMessage record
+     * @return Ballerina Pub/Sub Message record
      */
     private BMap<BString, Object> convertToBallerinaMessage(PubsubMessage message) {
         BMap<BString, Object> ballerinaMessage = ValueCreator.createRecordValue(
-                PubSubUtils.getModule(), "PubSubMessage");
+                PubSubUtils.getModule(), MESSAGE);
 
         // Set message ID
-        ballerinaMessage.put(StringUtils.fromString("messageId"),
-                StringUtils.fromString(message.getMessageId()));
+        ballerinaMessage.put(MESSAGE_ID_FIELD, StringUtils.fromString(message.getMessageId()));
 
         // Set data
         byte[] data = message.getData().toByteArray();
-        ballerinaMessage.put(StringUtils.fromString("data"),
-                ValueCreator.createArrayValue(data));
+        ballerinaMessage.put(DATA_FIELD, ValueCreator.createArrayValue(data));
 
         // Set attributes
         if (!message.getAttributesMap().isEmpty()) {
@@ -201,20 +209,18 @@ public class MessageDispatcher {
                 attributes.put(StringUtils.fromString(entry.getKey()),
                         StringUtils.fromString(entry.getValue()));
             }
-            ballerinaMessage.put(StringUtils.fromString("attributes"), attributes);
+            ballerinaMessage.put(ATTRIBUTES_FIELD, attributes);
         }
 
         // Set publish time
         com.google.protobuf.Timestamp publishTime = message.getPublishTime();
         Instant instant = Instant.ofEpochSecond(publishTime.getSeconds(), publishTime.getNanos());
-        ballerinaMessage.put(StringUtils.fromString("publishTime"),
-                StringUtils.fromString(instant.toString()));
+        ballerinaMessage.put(PUBLISH_TIME_FIELD, new Utc(instant).build());
 
         // Set ordering key if present
         String orderingKey = message.getOrderingKey();
-        if (orderingKey != null && !orderingKey.isEmpty()) {
-            ballerinaMessage.put(StringUtils.fromString("orderingKey"),
-                    StringUtils.fromString(orderingKey));
+        if (!orderingKey.isEmpty()) {
+            ballerinaMessage.put(ORDERING_KEY_FIELD, StringUtils.fromString(orderingKey));
         }
 
         return ballerinaMessage;

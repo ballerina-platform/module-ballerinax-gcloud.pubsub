@@ -13,6 +13,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+import ballerina/time;
 
 # Represents credentials for authenticating with Google Cloud Pub/Sub.
 #
@@ -60,24 +61,16 @@ public type ListenerConfiguration record {|
 
 # Represents a message to be published to Google Cloud Pub/Sub.
 #
-# + messageId - Unique message identifier (Only for received messages)
+# + messageId - Unique message identifier (Set by the broker upon publishing. Do not set manually)
 # + data - Message data as bytes
 # + attributes - Message attributes (key-value pairs)
-# + publishTime - Time when the message was published (Only for received messages)
-# + orderingKey - Ordering key for ordered delivery
-public type PubSubMessage record {|
+# + publishTime - Time when the message was published (Set by the broker upon publishing. Do not set manually)
+# + orderingKey - Ordering key for ordered delivery. Messages with the same ordering key are delivered in order.
+#                 `enableMessageOrdering` must be set to true in publisher configuration to use this feature
+public type Message record {|
     string messageId?;
     byte[] data;
     map<string> attributes?;
-    string publishTime?;
+    time:Utc publishTime?;
     string orderingKey?;
-|};
-
-# Represents metadata for a published message.
-#
-# + messageId - Unique message identifier assigned by the server
-# + publishTime - Timestamp when the message was published
-public type PublishMetadata record {|
-    string messageId;
-    string publishTime?;
 |};

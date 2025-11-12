@@ -34,7 +34,7 @@ public isolated class Listener {
     private isolated function listenerInit(string subscriptionName, ListenerConfiguration config) returns Error? =
     @java:Method {
         name: "init",
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 
     # Attaches the service to the `pubsub:Listener` endpoint.
@@ -47,7 +47,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure to register the service
     public isolated function attach(Service s, string[]|string? name = ()) returns error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 
     # Starts consuming messages on the attached service.
@@ -59,7 +59,7 @@ public isolated class Listener {
     public isolated function 'start() returns error? =
     @java:Method {
         name: "start",
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 
     # Detaches a service from the `pubsub:Listener` endpoint.
@@ -71,7 +71,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure to detach the service
     public isolated function detach(Service s) returns error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 
     # Stops consuming messages and gracefully shuts down the subscriber.
@@ -82,7 +82,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure
     public isolated function gracefulStop() returns error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 
     # Immediately stops consuming messages and terminates the subscriber.
@@ -93,7 +93,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure
     public isolated function immediateStop() returns error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 }
 
@@ -109,5 +109,5 @@ public annotation PubSubServiceConfig ServiceConfig on service, class;
 
 # The Pub/Sub service type.
 public type Service distinct service object {
-    // remote function onMessage(PubSubMessage message, Caller caller) returns error?;
+    // remote function onMessage(Message message, Caller caller) returns error?;
 };

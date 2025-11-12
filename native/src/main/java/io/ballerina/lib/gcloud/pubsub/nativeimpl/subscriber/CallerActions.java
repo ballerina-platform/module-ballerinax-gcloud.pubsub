@@ -16,12 +16,14 @@
  * under the License.
  */
 
-package io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber;
+package io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber;
 
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
 import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.values.BObject;
-import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubUtils;
+
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ACK_REPLY_CONSUMER;
 
 /**
  * Native implementation for Google Cloud Pub/Sub Caller actions.
@@ -37,7 +39,7 @@ public class CallerActions {
      */
     public static Object ack(Environment environment, BObject callerObject) {
         try {
-            AckReplyConsumer consumer = (AckReplyConsumer) callerObject.getNativeData("ACK_REPLY_CONSUMER");
+            AckReplyConsumer consumer = (AckReplyConsumer) callerObject.getNativeData(ACK_REPLY_CONSUMER);
             if (consumer != null) {
                 consumer.ack();
             }
@@ -56,7 +58,7 @@ public class CallerActions {
      */
     public static Object nack(Environment environment, BObject callerObject) {
         try {
-            AckReplyConsumer consumer = (AckReplyConsumer) callerObject.getNativeData("ACK_REPLY_CONSUMER");
+            AckReplyConsumer consumer = (AckReplyConsumer) callerObject.getNativeData(ACK_REPLY_CONSUMER);
             if (consumer != null) {
                 consumer.nack();
             }

@@ -27,7 +27,7 @@ public isolated client class Caller {
     # + return - A `pubsub:Error` if acknowledgement fails or else '()'
     isolated remote function ack() returns Error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.CallerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.CallerActions"
     } external;
 
     # Rejects the received message and requests re-delivery.
@@ -38,6 +38,6 @@ public isolated client class Caller {
     # + return - A `pubsub:Error` if operation fails or else '()'
     isolated remote function nack() returns Error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber.CallerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.CallerActions"
     } external;
 }

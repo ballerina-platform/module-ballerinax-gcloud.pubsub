@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package io.ballerina.stdlib.gcloud.pubsub.nativeimpl.subscriber;
+package io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber;
 
 import io.ballerina.runtime.api.values.BError;
 

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher;
+package io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher;
 
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutures;
@@ -27,17 +27,18 @@ import com.google.cloud.pubsub.v1.Publisher;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
+import io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants;
+import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
 import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.ArrayType;
+import io.ballerina.runtime.api.types.PredefinedTypes;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubConstants;
-import io.ballerina.stdlib.gcloud.pubsub.utils.PubSubUtils;
 import org.threeten.bp.Duration;
 
 import java.io.ByteArrayInputStream;
@@ -50,6 +51,20 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ATTRIBUTES_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.BATCH_SETTINGS_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CREDENTIALS_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CREDENTIALS_JSON_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.CREDENTIALS_PATH_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.DATA_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.DELAY_THRESHOLD_MILLIS_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ELEMENT_COUNT_THRESHOLD_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ENABLE_BATCHING_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ENABLE_MESSAGE_ORDERING_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.ORDERING_KEY_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.PROJECT_ID_FIELD;
+import static io.ballerina.lib.gcloud.pubsub.utils.PubSubConstants.REQUEST_BYTE_SIZE_THRESHOLD_FIELD;
+
 /**
  * Native implementation for Google Cloud Pub/Sub Publisher actions.
  */
@@ -61,18 +76,15 @@ public class PublisherActions {
      * @param publisherObject Publisher object from Ballerina
      * @return Error if initialization fails, null otherwise
      */
-    public static Object init(BObject publisherObject) {
+    public static Object init(BObject publisherObject, BString topicName, BMap<BString, Object> config) {
         try {
-            String topicName = publisherObject.getStringValue(StringUtils.fromString("topicName")).getValue();
-            BMap<BString, Object> config = (BMap<BString, Object>) publisherObject.get(
-                    StringUtils.fromString("publisherConfig"));
-
-            String projectId = config.getStringValue(StringUtils.fromString("projectId")).getValue();
+            String topicNameStr = topicName.getValue();
+            String projectId = config.getStringValue(PROJECT_ID_FIELD).getValue();
 
             // Parse topic name
             TopicName topic;
-            if (topicName.startsWith("projects/")) {
-                String[] parts = topicName.split("/");
+            if (topicNameStr.startsWith("projects/")) {
+                String[] parts = topicNameStr.split("/");
                 if (parts.length == 4 && "topics".equals(parts[2])) {
                     topic = TopicName.of(parts[1], parts[3]);
                 } else {
@@ -80,7 +92,7 @@ public class PublisherActions {
                             "Expected: projects/{project}/topics/{topic}");
                 }
             } else {
-                topic = TopicName.of(projectId, topicName);
+                topic = TopicName.of(projectId, topicNameStr);
             }
 
             Publisher.Builder publisherBuilder = Publisher.newBuilder(topic);
@@ -92,17 +104,13 @@ public class PublisherActions {
             }
 
             // Configure batching if enabled
-            boolean enableBatching = config.getBooleanValue(StringUtils.fromString("enableBatching"));
-            if (enableBatching && config.containsKey(StringUtils.fromString("batchSettings"))) {
-                BMap<BString, Object> batchSettings = (BMap<BString, Object>) config.get(
-                        StringUtils.fromString("batchSettings"));
+            boolean enableBatching = config.getBooleanValue(ENABLE_BATCHING_FIELD);
+            if (enableBatching && config.containsKey(BATCH_SETTINGS_FIELD)) {
+                BMap<BString, Object> batchSettings = (BMap<BString, Object>) config.get(BATCH_SETTINGS_FIELD);
 
-                long elementCountThreshold = batchSettings.getIntValue(
-                        StringUtils.fromString("elementCountThreshold"));
-                long requestByteSizeThreshold = batchSettings.getIntValue(
-                        StringUtils.fromString("requestByteSizeThreshold"));
-                long delayThresholdMillis = batchSettings.getIntValue(
-                        StringUtils.fromString("delayThresholdMillis"));
+                long elementCountThreshold = batchSettings.getIntValue(ELEMENT_COUNT_THRESHOLD_FIELD);
+                long requestByteSizeThreshold = batchSettings.getIntValue(REQUEST_BYTE_SIZE_THRESHOLD_FIELD);
+                long delayThresholdMillis = batchSettings.getIntValue(DELAY_THRESHOLD_MILLIS_FIELD);
 
                 BatchingSettings batchingSettings = BatchingSettings.newBuilder()
                         .setElementCountThreshold(elementCountThreshold)
@@ -114,8 +122,7 @@ public class PublisherActions {
             }
 
             // Enable message ordering if configured
-            boolean enableMessageOrdering = config.getBooleanValue(
-                    StringUtils.fromString("enableMessageOrdering"));
+            boolean enableMessageOrdering = config.getBooleanValue(ENABLE_MESSAGE_ORDERING_FIELD);
             if (enableMessageOrdering) {
                 publisherBuilder.setEnableMessageOrdering(true);
             }
@@ -138,7 +145,7 @@ public class PublisherActions {
      * @param environment Ballerina runtime environment
      * @param publisherObject Publisher object from Ballerina
      * @param message Message to publish
-     * @return Error if publishing fails, null otherwise
+     * @return message ID if success, Error if publishing fails
      */
     public static Object publish(Environment environment, BObject publisherObject, BMap<BString, Object> message) {
         try {
@@ -146,42 +153,8 @@ public class PublisherActions {
             PubsubMessage pubsubMessage = buildPubsubMessage(message);
 
             ApiFuture<String> future = publisher.publish(pubsubMessage);
-            future.get(); // Wait for publish to complete
-
-            return null;
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return PubSubUtils.createError("Publishing was interrupted: " + e.getMessage(), e);
-        } catch (ExecutionException e) {
-            return PubSubUtils.createError("Failed to publish message: " + e.getCause().getMessage(), e);
-        } catch (Exception e) {
-            return PubSubUtils.createError("Unexpected error during publish: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Publishes a message and returns metadata.
-     *
-     * @param environment Ballerina runtime environment
-     * @param publisherObject Publisher object from Ballerina
-     * @param message Message to publish
-     * @return PublishMetadata record or Error
-     */
-    public static Object publishWithMetadata(Environment environment, BObject publisherObject,
-            BMap<BString, Object> message) {
-        try {
-            Publisher publisher = (Publisher) publisherObject.getNativeData(PubSubConstants.NATIVE_PUBLISHER);
-            PubsubMessage pubsubMessage = buildPubsubMessage(message);
-
-            ApiFuture<String> future = publisher.publish(pubsubMessage);
             String messageId = future.get(); // Wait for publish to complete
-
-            // Create metadata record
-            BMap<BString, Object> metadata = ValueCreator.createRecordValue(
-                    PubSubUtils.getModule(), "PublishMetadata");
-            metadata.put(StringUtils.fromString("messageId"), StringUtils.fromString(messageId));
-
-            return metadata;
+            return StringUtils.fromString(messageId);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return PubSubUtils.createError("Publishing was interrupted: " + e.getMessage(), e);
@@ -198,7 +171,7 @@ public class PublisherActions {
      * @param environment Ballerina runtime environment
      * @param publisherObject Publisher object from Ballerina
      * @param messages Array of messages to publish
-     * @return Error if publishing fails, null otherwise
+     * @return Array of message IDs if success, Error if publishing fails
      */
     public static Object publishBatch(Environment environment, BObject publisherObject, BArray messages) {
         try {
@@ -213,55 +186,15 @@ public class PublisherActions {
             }
 
             // Wait for all publishes to complete
-            ApiFutures.allAsList(futures).get();
-
-            return null;
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return PubSubUtils.createError("Batch publishing was interrupted: " + e.getMessage(), e);
-        } catch (ExecutionException e) {
-            return PubSubUtils.createError("Failed to publish batch: " + e.getCause().getMessage(), e);
-        } catch (Exception e) {
-            return PubSubUtils.createError("Unexpected error during batch publish: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Publishes multiple messages and returns metadata for each.
-     *
-     * @param environment Ballerina runtime environment
-     * @param publisherObject Publisher object from Ballerina
-     * @param messages Array of messages to publish
-     * @return Array of PublishMetadata records or Error
-     */
-    public static Object publishBatchWithMetadata(Environment environment, BObject publisherObject, BArray messages) {
-        try {
-            Publisher publisher = (Publisher) publisherObject.getNativeData(PubSubConstants.NATIVE_PUBLISHER);
-            List<ApiFuture<String>> futures = new ArrayList<>();
-
-            for (int i = 0; i < messages.size(); i++) {
-                BMap<BString, Object> message = (BMap<BString, Object>) messages.get(i);
-                PubsubMessage pubsubMessage = buildPubsubMessage(message);
-                ApiFuture<String> future = publisher.publish(pubsubMessage);
-                futures.add(future);
-            }
-
-            // Wait for all publishes to complete
             List<String> messageIds = ApiFutures.allAsList(futures).get();
 
-            // Create metadata array
-            ArrayType arrayType = TypeCreator.createArrayType(
-                    TypeCreator.createRecordType("PublishMetadata", PubSubUtils.getModule(), 0, false, 0));
-            BArray metadataArray = ValueCreator.createArrayValue(arrayType);
-
+            // Create message ID array
+            ArrayType arrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
+            BArray messageIdArray = ValueCreator.createArrayValue(arrayType);
             for (String messageId : messageIds) {
-                BMap<BString, Object> metadata = ValueCreator.createRecordValue(
-                        PubSubUtils.getModule(), "PublishMetadata");
-                metadata.put(StringUtils.fromString("messageId"), StringUtils.fromString(messageId));
-                metadataArray.append(metadata);
+                messageIdArray.append(StringUtils.fromString(messageId));
             }
-
-            return metadataArray;
+            return messageIdArray;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return PubSubUtils.createError("Batch publishing was interrupted: " + e.getMessage(), e);
@@ -298,20 +231,17 @@ public class PublisherActions {
     // Helper methods
 
     private static GoogleCredentials getCredentials(BMap<BString, Object> config) throws IOException {
-        if (!config.containsKey(StringUtils.fromString("credentials"))) {
+        if (!config.containsKey(CREDENTIALS_FIELD)) {
             return GoogleCredentials.getApplicationDefault();
         }
 
-        BMap<BString, Object> credentials = (BMap<BString, Object>) config.get(
-                StringUtils.fromString("credentials"));
+        BMap<BString, Object> credentials = (BMap<BString, Object>) config.get(CREDENTIALS_FIELD);
 
-        if (credentials.containsKey(StringUtils.fromString("credentialsPath"))) {
-            String credentialsPath = credentials.getStringValue(
-                    StringUtils.fromString("credentialsPath")).getValue();
+        if (credentials.containsKey(CREDENTIALS_PATH_FIELD)) {
+            String credentialsPath = credentials.getStringValue(CREDENTIALS_PATH_FIELD).getValue();
             return ServiceAccountCredentials.fromStream(new FileInputStream(credentialsPath));
-        } else if (credentials.containsKey(StringUtils.fromString("credentialsJson"))) {
-            String credentialsJson = credentials.getStringValue(
-                    StringUtils.fromString("credentialsJson")).getValue();
+        } else if (credentials.containsKey(CREDENTIALS_JSON_FIELD)) {
+            String credentialsJson = credentials.getStringValue(CREDENTIALS_JSON_FIELD).getValue();
             return ServiceAccountCredentials.fromStream(
                     new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8)));
         }
@@ -323,21 +253,20 @@ public class PublisherActions {
         PubsubMessage.Builder builder = PubsubMessage.newBuilder();
 
         // Set data
-        BArray data = message.getArrayValue(StringUtils.fromString("data"));
+        BArray data = message.getArrayValue(DATA_FIELD);
         builder.setData(ByteString.copyFrom(data.getBytes()));
 
         // Set attributes if present
-        if (message.containsKey(StringUtils.fromString("attributes"))) {
-            BMap<BString, BString> attributes = (BMap<BString, BString>) message.get(
-                    StringUtils.fromString("attributes"));
+        if (message.containsKey(ATTRIBUTES_FIELD)) {
+            BMap<BString, BString> attributes = (BMap<BString, BString>) message.get(ATTRIBUTES_FIELD);
             for (Map.Entry<BString, BString> entry : attributes.entrySet()) {
                 builder.putAttributes(entry.getKey().getValue(), entry.getValue().getValue());
             }
         }
 
         // Set ordering key if present
-        if (message.containsKey(StringUtils.fromString("orderingKey"))) {
-            String orderingKey = message.getStringValue(StringUtils.fromString("orderingKey")).getValue();
+        if (message.containsKey(ORDERING_KEY_FIELD)) {
+            String orderingKey = message.getStringValue(ORDERING_KEY_FIELD).getValue();
             if (orderingKey != null && !orderingKey.isEmpty()) {
                 builder.setOrderingKey(orderingKey);
             }

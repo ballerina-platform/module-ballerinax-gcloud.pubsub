@@ -17,12 +17,7 @@
 import ballerina/jballerina.java;
 
 # Represents a Google Cloud Pub/Sub publisher endpoint.
-#
-# + publisherConfig - Stores configurations related to the publisher
 public client isolated class Publisher {
-
-    final PublisherConfiguration & readonly publisherConfig;
-    private final string topicName;
 
     # Creates a new `gcloud.pubsub:Publisher`.
     #
@@ -30,63 +25,37 @@ public client isolated class Publisher {
     # + config - Configurations related to initializing the publisher
     # + return - A `gcloud.pubsub:Error` if initialization fails or else '()'
     public isolated function init(string topicName, *PublisherConfiguration config) returns Error? {
-        self.topicName = topicName;
-        self.publisherConfig = config.cloneReadOnly();
-        check self.publisherInit();
+        check self.publisherInit(topicName, config);
     }
 
-    private isolated function publisherInit() returns Error? =
+    private isolated function publisherInit(string topicName, *PublisherConfiguration config) returns Error? =
     @java:Method {
         name: "init",
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
 
     # Publishes a message to the topic.
     # ```ballerina
-    # gcloud.pubsub:Error? result = publisher->publish({data: "Hello World".toBytes()});
+    # string|gcloud.pubsub:Error? result = publisher->publish({data: "Hello World".toBytes()});
     # ```
     #
     # + message - Message to be published
-    # + return - A `gcloud.pubsub:Error` if the publish operation fails or else '()'
-    isolated remote function publish(PubSubMessage message) returns Error? =
+    # + return - The message ID as a string or a `gcloud.pubsub:Error` if the publish operation fails
+    isolated remote function publish(Message message) returns string|Error =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
-    } external;
-
-    # Publishes a message to the topic and returns metadata.
-    # ```ballerina
-    # gcloud.pubsub:PublishMetadata metadata = check publisher->publishWithMetadata({data: "Hello World".toBytes()});
-    # ```
-    #
-    # + message - Message to be published
-    # + return - A `gcloud.pubsub:PublishMetadata` containing the message ID and publish time or else a `gcloud.pubsub:Error`
-    isolated remote function publishWithMetadata(PubSubMessage message) returns PublishMetadata|Error =
-    @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
 
     # Publishes multiple messages to the topic.
     # ```ballerina
-    # gcloud.pubsub:Error? result = publisher->publishBatch([{data: "Message 1".toBytes()}, {data: "Message 2".toBytes()}]);
+    # string[]|gcloud.pubsub:Error? result = publisher->publishBatch([{data: "Message 1".toBytes()}, {data: "Message 2".toBytes()}]);
     # ```
     #
     # + messages - Array of messages to be published
-    # + return - A `gcloud.pubsub:Error` if the publish operation fails or else '()'
-    isolated remote function publishBatch(PubSubMessage[] messages) returns Error? =
+    # + return - The message IDs as an array of strings or a `gcloud.pubsub:Error` if the publish operation fails
+    isolated remote function publishBatch(Message[] messages) returns string[]|Error =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
-    } external;
-
-    # Publishes multiple messages to the topic and returns metadata for each.
-    # ```ballerina
-    # gcloud.pubsub:PublishMetadata[] metadata = check publisher->publishBatchWithMetadata([{data: "Message 1".toBytes()}, {data: "Message 2".toBytes()}]);
-    # ```
-    #
-    # + messages - Array of messages to be published
-    # + return - An array of `gcloud.pubsub:PublishMetadata` containing message IDs and publish times or else a `gcloud.pubsub:Error`
-    isolated remote function publishBatchWithMetadata(PubSubMessage[] messages) returns PublishMetadata[]|Error =
-    @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
 
     # Closes the publisher and releases all resources.
@@ -97,6 +66,6 @@ public client isolated class Publisher {
     # + return - A `gcloud.pubsub:Error` if closing the publisher fails or else '()'
     isolated remote function close() returns Error? =
     @java:Method {
-        'class: "io.ballerina.stdlib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
     } external;
 }

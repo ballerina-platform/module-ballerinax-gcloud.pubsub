@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package io.ballerina.stdlib.gcloud.pubsub.utils;
+package io.ballerina.lib.gcloud.pubsub.utils;
 
 import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.Module;
