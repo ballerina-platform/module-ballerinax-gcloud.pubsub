@@ -30,6 +30,7 @@ build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
+.m2
 
 # Ballerina
 target/
@@ -37,6 +38,9 @@ target/
 Dependencies.toml
 Ballerina.lock
 ballerina-internal.log
+generated
+**/Config.toml
+examples/**/Dependencies.toml
 
 # IDE
 .idea/
@@ -46,6 +50,8 @@ ballerina-internal.log
 .classpath
 .project
 bin/
+.settings
+.vscode
 
 # OS
 .DS_Store
@@ -57,3 +63,7 @@ Thumbs.db
 
 # Temporary folders
 /existing/
+
+# Environment files
+*.env
+*.ctx
