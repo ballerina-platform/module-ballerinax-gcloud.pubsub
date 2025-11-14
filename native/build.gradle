@@ -24,6 +24,29 @@ plugins {
 
 description = 'Ballerinax - Google Cloud Pub/Sub Java Utils'
 
+configurations.all {
+    resolutionStrategy {
+        // Force use of secure versions to fix CVE-2024-7254 and CVE-2025-55163
+        force "com.google.protobuf:protobuf-java:${protobufVersion}"
+        force "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+        force "io.grpc:grpc-netty-shaded:${grpcVersion}"
+        force "io.grpc:grpc-api:${grpcVersion}"
+        force "io.grpc:grpc-core:${grpcVersion}"
+        force "io.grpc:grpc-stub:${grpcVersion}"
+        force "io.grpc:grpc-protobuf:${grpcVersion}"
+        force "io.grpc:grpc-protobuf-lite:${grpcVersion}"
+        force "io.grpc:grpc-auth:${grpcVersion}"
+        force "io.grpc:grpc-context:${grpcVersion}"
+        force "io.grpc:grpc-alts:${grpcVersion}"
+        force "io.grpc:grpc-googleapis:${grpcVersion}"
+        force "io.grpc:grpc-grpclb:${grpcVersion}"
+        force "io.grpc:grpc-inprocess:${grpcVersion}"
+        force "io.grpc:grpc-services:${grpcVersion}"
+        force "io.grpc:grpc-util:${grpcVersion}"
+        force "io.grpc:grpc-xds:${grpcVersion}"
+    }
+}
+
 dependencies {
     implementation group: 'org.ballerinalang', name: 'ballerina-lang', version: "${ballerinaLangVersion}"
     implementation group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
