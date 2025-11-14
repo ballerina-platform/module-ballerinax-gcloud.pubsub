@@ -29,7 +29,7 @@ def packageName = "gcloud.pubsub"
 def packageOrg = "ballerinax"
 def tomlVersion = stripBallerinaExtensionVersion("${project.version}")
 def ballerinaTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/Ballerina.toml")
-def ballerinaConfigFile = new File("$project.projectDir/Ballerina.toml")
+def ballerinaTomlFile = new File("$project.projectDir/Ballerina.toml") 
 
 def stripBallerinaExtensionVersion(String extVersion) {
     if (extVersion.matches(project.ext.timestampedVersionRegex)) {
@@ -60,23 +60,133 @@ configurations {
             attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment, TargetJvmEnvironment.STANDARD_JVM))
         }
     }
-    jbalTools
-    ballerinaStdLibs
 }
 
 dependencies {
-    jbalTools("org.ballerinalang:jballerina-tools:${ballerinaLangVersion}") {
+    externalJars(group: 'com.google.cloud', name: 'google-cloud-pubsub', version: "${googleCloudPubSubVersion}") {
         transitive = false
     }
-    externalJars(group: 'com.google.cloud', name: 'google-cloud-pubsub', version: "${googleCloudPubSubVersion}")
+    externalJars(group: 'com.google.api', name: 'gax', version: "${googleGaxVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api', name: 'gax-grpc', version: "${googleGaxVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.auth', name: 'google-auth-library-credentials', version: "${googleAuthLibraryVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: "${googleAuthLibraryVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-netty-shaded', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-api', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-core', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-auth', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-stub', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-protobuf', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-protobuf-lite', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.grpc', name: 'grpc-context', version: "${grpcVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api.grpc', name: 'proto-google-cloud-pubsub-v1', version: "${googleCloudPubsubApiVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api.grpc', name: 'grpc-google-cloud-pubsub-v1', version: "${googleCloudPubsubApiVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api.grpc', name: 'proto-google-common-protos', version: "${protoGoogleCommonProtosVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api.grpc', name: 'proto-google-iam-v1', version: "${protoGoogleIamV1Version}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.protobuf', name: 'protobuf-java', version: "${protobufVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api', name: 'api-common', version: "${googleApiCommonVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.http-client', name: 'google-http-client', version: "${googleHttpClientVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.opencensus', name: 'opencensus-api', version: "${opencensusVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.opencensus', name: 'opencensus-contrib-http-util', version: "${opencensusVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.guava', name: 'guava', version: "${guavaVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.guava', name: 'failureaccess', version: "${guavaFailureaccessVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'org.threeten', name: 'threetenbp', version: "${threetenbpVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.j2objc', name: 'j2objc-annotations', version: "${j2objcAnnotationsVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.code.findbugs', name: 'jsr305', version: "${jsr305Version}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.errorprone', name: 'error_prone_annotations', version: "${errorProneAnnotationsVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.api-client', name: 'google-api-client', version: "${googleApiClientVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.oauth-client', name: 'google-oauth-client', version: "${googleOauthClientVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.http-client', name: 'google-http-client-gson', version: "${googleHttpClientVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'io.perfmark', name: 'perfmark-api', version: "${perfmarkApiVersion}") {
+        transitive = false
+    }
 }
 
 task updateTomlFiles {
     doLast {
         def newConfig = ballerinaTomlFilePlaceHolder.text.replace("@project.version@", project.version)
         newConfig = newConfig.replace("@toml.version@", tomlVersion)
-        newConfig = newConfig.replace("@googleCloudPubSub.version@", googleCloudPubSubVersion)
-        ballerinaConfigFile.text = newConfig
+        newConfig = newConfig.replace("@gcloud.pubsub.version@", googleCloudPubSubVersion)
+        newConfig = newConfig.replace("@gax.version@", googleGaxVersion)
+        newConfig = newConfig.replace("@google.auth.version@", googleAuthLibraryVersion)
+        newConfig = newConfig.replace("@grpc.version@", grpcVersion)
+        newConfig = newConfig.replace("@google.grpc.version@", googleCloudPubsubApiVersion)
+        newConfig = newConfig.replace("@google.proto.commons.version@", protoGoogleCommonProtosVersion)
+        newConfig = newConfig.replace("@google.proto.iam.version@", protoGoogleIamV1Version)
+        newConfig = newConfig.replace("@protobuf.version@", protobufVersion)
+        newConfig = newConfig.replace("@google.api.common.version@", googleApiCommonVersion)
+        newConfig = newConfig.replace("@google.http.client.version@", googleHttpClientVersion)
+        newConfig = newConfig.replace("@opencensus.version@", opencensusVersion)
+        newConfig = newConfig.replace("@guava.version@", guavaVersion)
+        newConfig = newConfig.replace("@guava.failureaccess.version@", guavaFailureaccessVersion)
+        newConfig = newConfig.replace("@threetenbp.version@", threetenbpVersion)
+        newConfig = newConfig.replace("@j2objc.annotations.version@", j2objcAnnotationsVersion)
+        newConfig = newConfig.replace("@jsr305.version@", jsr305Version)
+        newConfig = newConfig.replace("@err.prone.annotation.version@", errorProneAnnotationsVersion)
+        newConfig = newConfig.replace("@google.api.client.version@", googleApiClientVersion)
+        newConfig = newConfig.replace("@google.oauth.client.version@", googleOauthClientVersion)
+        newConfig = newConfig.replace("@google.http.client.version@", googleHttpClientVersion)
+        newConfig = newConfig.replace("@perfmark.api.version@", perfmarkApiVersion)
+        ballerinaTomlFile.text = newConfig
     }
 }
 
@@ -93,11 +203,42 @@ task commitTomlFiles {
     }
 }
 
-updateTomlFiles.dependsOn copyStdlibs
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact source: createArtifactZip, extension: 'zip'
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ballerina-platform/module-${packageOrg}-${packageName}")
+            credentials {
+                username = System.getenv("publishUser")
+                password = System.getenv("publishPAT")
+            }
+        }
+    }
+}
 
-build.dependsOn ":gcloud.pubsub-native:build"
-build.dependsOn "updateTomlFiles"
-build.dependsOn "initializeVariables"
-build.dependsOn ":gcloud.pubsub-native:jar"
+clean {
+    delete 'build'
+}
 
-test.dependsOn ":gcloud.pubsub-native:build"
+// updateTomlFiles.dependsOn copyStdlibs
+
+// build.dependsOn ":gcloud.pubsub-native:build"
+// build.dependsOn "updateTomlFiles"
+// build.dependsOn "initializeVariables"
+// build.dependsOn ":gcloud.pubsub-native:jar"
+
+// test.dependsOn ":gcloud.pubsub-native:build"
+
+build.dependsOn copyToLib
+build.dependsOn ":${packageName}-native:build"
+build.dependsOn generatePomFileForMavenPublication
+
+test.dependsOn ":${packageName}-native:build"
+
+publish.dependsOn build
+publishToMavenLocal.dependsOn build

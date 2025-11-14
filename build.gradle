@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2025 WSO2 LLC. (http://www.wso2.org).
+ * Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com)
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,12 +16,16 @@
  * under the License.
  */
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
-    id "com.github.spotbugs"
+    id "com.github.spotbugs-base"
     id "com.github.johnrengelman.shadow"
     id "de.undercouch.download"
     id "net.researchgate.release"
 }
+
+description = 'Ballerina - GCloud Pub/Sub'
 
 allprojects {
     group = project.group
@@ -32,13 +36,6 @@ allprojects {
 
     repositories {
         mavenLocal()
-        maven {
-            url = 'https://maven.wso2.org/nexus/content/repositories/releases/'
-        }
-
-        maven {
-            url = 'https://mvnrepository.com/artifact/org.testng/testng'
-        }
 
         maven {
             url = 'https://maven.wso2.org/nexus/content/groups/wso2-public/'
@@ -49,7 +46,7 @@ allprojects {
         }
 
         maven {
-            url = 'https://maven.pkg.github.com/ballerina-platform/*'
+            url = 'https://maven.pkg.github.com/ballerina-platform/ballerina-lang'
             credentials {
                 username System.getenv("packageUser")
                 password System.getenv("packagePAT")
@@ -58,28 +55,25 @@ allprojects {
     }
 
     ext {
-        snapshotVersion= '-SNAPSHOT'
+        snapshotVersion = '-SNAPSHOT'
         timestampedVersionRegex = '.*-\\d{8}-\\d{6}-\\w.*\$'
     }
+}
+
+task build {
+    dependsOn(":gcloud.pubsub-native:build")
+    dependsOn(":gcloud.pubsub-ballerina:build")
 }
 
 def moduleVersion = project.version.replace("-SNAPSHOT", "")
 
 release {
-    failOnPublishNeeded = false
-    failOnSnapshotDependencies = true
-
     buildTasks = ['build']
+    failOnSnapshotDependencies = true
     versionPropertyFile = 'gradle.properties'
-    tagTemplate = 'v$version'
-
+    tagTemplate = 'v${version}'
     git {
         requireBranch = "release-${moduleVersion}"
         pushToRemote = 'origin'
     }
-}
-
-task build {
-    dependsOn(':gcloud.pubsub-native:build')
-    dependsOn(':gcloud.pubsub-ballerina:build')
 }
