@@ -139,61 +139,73 @@ path = "../libs/google-http-client-1.44.2.jar"
 groupId = "io.opencensus"
 artifactId = "opencensus-api"
 version = "0.31.1"
+path = "../libs/opencensus-api-0.31.1.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.opencensus"
 artifactId = "opencensus-contrib-http-util"
 version = "0.31.1"
+path = "../libs/opencensus-contrib-http-util-0.31.1.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.guava"
 artifactId = "guava"
 version = "33.2.1-jre"
+path = "../libs/guava-33.2.1-jre.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.guava"
 artifactId = "failureaccess"
 version = "1.0.2"
+path = "../libs/failureaccess-1.0.2.jar"
 
 [[platform.java21.dependency]]
 groupId = "org.threeten"
 artifactId = "threetenbp"
 version = "1.6.9"
+path = "../libs/threetenbp-1.6.9.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.j2objc"
 artifactId = "j2objc-annotations"
 version = "3.0.0"
+path = "../libs/j2objc-annotations-3.0.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.code.findbugs"
 artifactId = "jsr305"
 version = "3.0.2"
+path = "../libs/jsr305-3.0.2.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.errorprone"
 artifactId = "error_prone_annotations"
 version = "2.36.0"
+path = "../libs/error_prone_annotations-2.36.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api-client"
 artifactId = "google-api-client"
 version = "2.7.0"
+path = "../libs/google-api-client-2.7.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.oauth-client"
 artifactId = "google-oauth-client"
 version = "1.36.0"
+path = "../libs/google-oauth-client-1.36.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.http-client"
 artifactId = "google-http-client-gson"
 version = "1.44.2"
+path = "../libs/google-http-client-1.44.2.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.perfmark"
 artifactId = "perfmark-api"
 version = "0.27.0"
+path = "../libs/perfmark-api-0.27.0.jar"
 
 [build-options]
 observabilityIncluded=true
