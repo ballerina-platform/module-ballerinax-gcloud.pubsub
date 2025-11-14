@@ -199,7 +199,7 @@ path = "./lib/google-oauth-client-1.36.0.jar"
 groupId = "com.google.http-client"
 artifactId = "google-http-client-gson"
 version = "1.44.2"
-path = "./lib/google-http-client-1.44.2.jar"
+path = "./lib/google-http-client-gson-1.44.2.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.perfmark"
