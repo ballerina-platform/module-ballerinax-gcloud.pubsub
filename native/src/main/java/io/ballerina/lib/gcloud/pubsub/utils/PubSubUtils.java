@@ -27,6 +27,8 @@ import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 
+import java.math.BigDecimal;
+
 /**
  * Utility functions for Google Cloud Pub/Sub module.
  */
@@ -84,6 +86,10 @@ public class PubSubUtils {
      */
     public static BMap<BString, Object> createRecord(String recordTypeName) {
         return ValueCreator.createRecordValue(getModule(), recordTypeName);
+    }
+
+    public static long decimalToMillis(BigDecimal seconds) {
+        return seconds.multiply(BigDecimal.valueOf(1000)).longValue();
     }
 
     private PubSubUtils() {

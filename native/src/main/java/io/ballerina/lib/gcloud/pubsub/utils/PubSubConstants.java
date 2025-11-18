@@ -25,11 +25,6 @@ import io.ballerina.runtime.api.values.BString;
  * Constants for Google Cloud Pub/Sub module.
  */
 public class PubSubConstants {
-
-    // Module constants
-    public static final String PACKAGE_ORG = "ballerinax";
-    public static final String PACKAGE_NAME = "gcloud.pubsub";
-
     // Native data keys
     public static final String NATIVE_PUBLISHER = "NATIVE_PUBLISHER";
     public static final String NATIVE_SUBSCRIBER = "NATIVE_SUBSCRIBER";

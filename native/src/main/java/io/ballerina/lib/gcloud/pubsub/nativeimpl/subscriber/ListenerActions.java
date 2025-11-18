@@ -98,7 +98,7 @@ public class ListenerActions {
      * @return Error if registration fails, null otherwise
      */
     public static Object attach(Environment environment, BObject listenerObject, BObject serviceObject,
-            Object name) {
+                                Object name) {
         try {
             @SuppressWarnings("unchecked")
             ArrayList<BObject> services = (ArrayList<BObject>) listenerObject.getNativeData(CONSUMER_SERVICES);
