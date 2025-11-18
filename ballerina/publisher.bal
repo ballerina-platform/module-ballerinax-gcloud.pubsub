@@ -40,7 +40,7 @@ public client isolated class Publisher {
 
     # Publishes a message to a GCp topic.
     # ```ballerina
-    # string|pubsub:Error? result = publisher->publish({data: "Hello World".toBytes()});
+    # string|pubsub:Error result = publisher->publish({data: "Hello World".toBytes()});
     # ```
     #
     # + message - Message to be published
