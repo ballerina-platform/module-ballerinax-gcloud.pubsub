@@ -80,15 +80,15 @@ import ballerinax/gcloud.pubsub;
 Create a `pubsub:Publisher` instance with your Google Cloud Pub/Sub configuration.
 
 ```ballerina
-configurable string projectId = ?; // GCP Project ID
-configurable string topicName = ?; // Pub/Sub Topic Name
-configurable string credentialsPath = ?; // Path to Service Account JSON file
+configurable string project = ?; // GCP Project ID
+configurable string topic = ?; // Pub/Sub Topic Name
+configurable string gcpCredentialsFilePath = ?; // Path to Service Account JSON file
 
 pubsub:Publisher publisher = check new (
-    topicName,
-    projectId = projectId,
-    credentials = {
-        credentialsPath: credentialsPath
+    project,
+    topic,
+    auth = {
+        path: gcpCredentialsFilePath
     }
 );
 ```
@@ -120,20 +120,10 @@ string messageId = check publisher->publish({
 #### Publish a message with ordering key
 
 ```ballerina
-string messageId = check publisher->publish({
+check publisher->publish({
     data: "Message 1".toBytes(),
     orderingKey: "customer-123"
 });
-```
-
-#### Publish multiple messages in a batch
-
-```ballerina
-string[] messageIds = check publisher->publishBatch([
-    {data: "Message 1".toBytes()},
-    {data: "Message 2".toBytes()},
-    {data: "Message 3".toBytes()}
-]);
 ```
 
 ### Step 4: Clean up resources
