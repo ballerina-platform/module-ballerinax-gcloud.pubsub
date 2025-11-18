@@ -26,7 +26,6 @@ import io.ballerina.runtime.api.values.BString;
  */
 public class PubSubConstants {
     // Native data keys
-    public static final String NATIVE_PUBLISHER = "NATIVE_PUBLISHER";
     public static final String NATIVE_SUBSCRIBER = "NATIVE_SUBSCRIBER";
     public static final String NATIVE_SUBSCRIPTION_NAME = "NATIVE_SUBSCRIPTION_NAME";
     public static final String ACK_REPLY_CONSUMER = "ACK_REPLY_CONSUMER";
