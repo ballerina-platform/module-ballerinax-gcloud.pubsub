@@ -18,14 +18,10 @@
 
 package io.ballerina.lib.gcloud.pubsub.utils;
 
-import io.ballerina.runtime.api.Environment;
-import io.ballerina.runtime.api.Module;
+import io.ballerina.lib.gcloud.pubsub.ModuleUtils;
 import io.ballerina.runtime.api.creators.ErrorCreator;
-import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BError;
-import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
 
 import java.math.BigDecimal;
 
@@ -33,59 +29,29 @@ import java.math.BigDecimal;
  * Utility functions for Google Cloud Pub/Sub module.
  */
 public class PubSubUtils {
-
-    private static Module pubsubModule;
-
-    /**
-     * Sets the Pub/Sub module from the runtime environment.
-     *
-     * @param env Ballerina runtime environment
-     */
-    public static void setModule(Environment env) {
-        pubsubModule = env.getCurrentModule();
-    }
+    public static final String PUBSUB_ERROR = "Error";
 
     /**
-     * Gets the Pub/Sub module.
+     * Creates a Ballerina error with given message.
      *
-     * @return Module instance
-     */
-    public static Module getModule() {
-        return pubsubModule;
-    }
-
-    /**
-     * Creates a Pub/Sub error.
-     *
-     * @param message Error message
-     * @return BError instance
+     * @param message error message
+     * @return Ballerina error
      */
     public static BError createError(String message) {
-        return ErrorCreator.createDistinctError(PubSubConstants.ERROR_TYPE, getModule(),
-                StringUtils.fromString(message));
+        return ErrorCreator.createError(ModuleUtils.getModule(), PUBSUB_ERROR,
+                StringUtils.fromString(message), null, null);
     }
 
     /**
-     * Creates a Pub/Sub error with a cause.
+     * Creates a Ballerina error with given message and cause.
      *
-     * @param message Error message
-     * @param cause Cause of the error
-     * @return BError instance
+     * @param message error message
+     * @param cause   exception cause
+     * @return Ballerina error
      */
     public static BError createError(String message, Throwable cause) {
-        BError causeError = ErrorCreator.createError(cause);
-        return ErrorCreator.createDistinctError(PubSubConstants.ERROR_TYPE, getModule(),
-                StringUtils.fromString(message), causeError);
-    }
-
-    /**
-     * Creates an empty record of the given type.
-     *
-     * @param recordTypeName Name of the record type
-     * @return BMap instance
-     */
-    public static BMap<BString, Object> createRecord(String recordTypeName) {
-        return ValueCreator.createRecordValue(getModule(), recordTypeName);
+        return ErrorCreator.createError(ModuleUtils.getModule(), PUBSUB_ERROR,
+                StringUtils.fromString(message), ErrorCreator.createError(cause), null);
     }
 
     public static long decimalToMillis(BigDecimal seconds) {

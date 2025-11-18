@@ -21,5 +21,5 @@ function init() {
 }
 
 function setModule() = @java:Method {
-    'class: "io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils"
+    'class: "io.ballerina.lib.gcloud.pubsub.ModuleUtils"
 } external;

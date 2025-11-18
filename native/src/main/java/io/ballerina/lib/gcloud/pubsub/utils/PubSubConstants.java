@@ -34,9 +34,6 @@ public class PubSubConstants {
     public static final String STARTED_SERVICES = "STARTED_SERVICES";
     public static final String CONFIG = "CONFIG";
 
-    // Error type
-    public static final String ERROR_TYPE = "Error";
-
     // Ballerina types
     public static final String CALLER = "Caller";
     public static final String ON_MESSAGE = "onMessage";
@@ -45,13 +42,6 @@ public class PubSubConstants {
     // Ballerina type field names
     public static final BString PROJECT_ID_FIELD = StringUtils.fromString("projectId");
     public static final BString CREDENTIALS_FIELD = StringUtils.fromString("credentials");
-    public static final BString ENABLE_BATCHING_FIELD = StringUtils.fromString("enableBatching");
-    public static final BString BATCH_SETTINGS_FIELD = StringUtils.fromString("batchSettings");
-    public static final BString ENABLE_MESSAGE_ORDERING_FIELD = StringUtils.fromString("enableMessageOrdering");
-
-    public static final BString ELEMENT_COUNT_THRESHOLD_FIELD = StringUtils.fromString("elementCountThreshold");
-    public static final BString REQUEST_BYTE_SIZE_THRESHOLD_FIELD = StringUtils.fromString("requestByteSizeThreshold");
-    public static final BString DELAY_THRESHOLD_MILLIS_FIELD = StringUtils.fromString("delayThresholdMillis");
 
     public static final BString DATA_FIELD = StringUtils.fromString("data");
     public static final BString ATTRIBUTES_FIELD = StringUtils.fromString("attributes");
