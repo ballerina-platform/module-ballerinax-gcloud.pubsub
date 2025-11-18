@@ -21,8 +21,8 @@ path = "../native/build/libs/gcloud.pubsub-native-0.1.1-SNAPSHOT.jar"
 [[platform.java21.dependency]]
 groupId = "com.google.cloud"
 artifactId = "google-cloud-pubsub"
-version = "1.132.1"
-path = "./lib/google-cloud-pubsub-1.132.1.jar"
+version = "1.143.1"
+path = "./lib/google-cloud-pubsub-1.143.1.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api"
