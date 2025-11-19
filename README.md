@@ -1,6 +1,6 @@
 # Ballerina Google Cloud Pub/Sub Connector
 
-[![Build](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/workflows/CI/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions?query=workflow%3ACI)
+[![Build](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-gcloud.pubsub/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-gcloud.pubsub)
 [![Trivy](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/trivy-scan.yml)
 [![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/build-with-bal-test-graalvm.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/build-with-bal-test-graalvm.yml)
