@@ -20,18 +20,18 @@ import ballerina/jballerina.java;
 # Provides a listener to consume messages asynchronously from a Google Cloud Pub/Sub subscription.
 public isolated class Listener {
 
-    # Initializes a Listener object with the given subscription and configuration.
+    # Initializes a GCP Pub/Sub listener instance.
     # ```ballerina
-    # pubsub:Listener pubsubListener = check new("my-subscription", projectId = "my-project");
+    # pubsub:Listener pubsubListener = check new("<gcp-project-id>");
     # ```
     #
-    # + subscriptionName - The subscription name or full path
-    # + listenerConfig - The listener configuration
-    public isolated function init(string subscriptionName, *ListenerConfiguration listenerConfig) returns Error? {
-        return self.listenerInit(subscriptionName, listenerConfig);
+    # + project - The Google Cloud project ID
+    # + config - The listener configuration
+    public isolated function init(string project, *ListenerConfiguration config) returns Error? {
+        return self.externInit(project, config);
     }
 
-    private isolated function listenerInit(string subscriptionName, ListenerConfiguration config) returns Error? =
+    private isolated function externInit(string project, ListenerConfiguration config) returns Error? =
     @java:Method {
         name: "init",
         'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
@@ -96,18 +96,3 @@ public isolated class Listener {
         'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
     } external;
 }
-
-# Configurations for the Pub/Sub service.
-#
-# + subscriptionName - The subscription name
-public type PubSubServiceConfig record {|
-    string subscriptionName;
-|};
-
-# The annotation to configure the Pub/Sub service.
-public annotation PubSubServiceConfig ServiceConfig on service, class;
-
-# The Pub/Sub service type.
-public type Service distinct service object {
-    // remote function onMessage(Message message, Caller caller) returns error?;
-};
