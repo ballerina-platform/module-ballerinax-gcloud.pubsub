@@ -112,7 +112,7 @@ public type ServiceConfiguration record {|
     # Minimum duration for each acknowledgment deadline extension (in seconds).
     # Specifies the minimum amount of time that must pass before the redelivery of a message occurs.
     # Set this to a high value for exactly-once delivery scenarios to ensure ack IDs remain valid.
-    decimal minDurationPerAckExtension;
+    decimal minDurationPerAckExtension = 0.0;
     # Number of StreamingPull streams to pull messages from the subscription.
     # Increasing this value allows parallel message processing and higher throughput.
     int parallelPullCount = 1;

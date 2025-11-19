@@ -132,13 +132,14 @@ check publisher->close();
 Create a `pubsub:Listener` instance to consume messages from a subscription.
 
 ```ballerina
-configurable string subscriptionName = ?;
+configurable string project = ?;
+configurable string gcpCredentialsFilePath = ?;
 
 listener pubsub:Listener pubsubListener = check new (
-    subscriptionName,
+    project,
     projectId = projectId,
-    credentials = {
-        credentialsPath: credentialsPath
+    auth = {
+        path: gcpCredentialsFilePath
     }
 );
 ```
@@ -148,10 +149,13 @@ listener pubsub:Listener pubsubListener = check new (
 Attach a service to the listener to process incoming messages.
 
 ```ballerina
-import ballerina/io;
+configurable string subscription = ?;
 
+@pubsub:ServiceConfig {
+    subscription
+}
 service on pubsubListener {
-    remote function onMessage(pubsub:PubSubMessage message, pubsub:Caller caller) returns error? {
+    remote function onMessage(pubsub:Message message, pubsub:Caller caller) returns error? {
         // Process the message
         io:println("Received message: ", check string:fromBytes(message.data));
 
@@ -169,6 +173,9 @@ service on pubsubListener {
 #### Handle errors and negative acknowledgements
 
 ```ballerina
+@pubsub:ServiceConfig {
+    subscription
+}
 service on pubsubListener {
     remote function onMessage(pubsub:PubSubMessage message, pubsub:Caller caller) returns error? {
         // Process the message
