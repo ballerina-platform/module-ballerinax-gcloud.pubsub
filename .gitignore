@@ -57,3 +57,6 @@ Thumbs.db
 
 # Temporary folders
 /existing/
+
+.claude/
+*.ctx

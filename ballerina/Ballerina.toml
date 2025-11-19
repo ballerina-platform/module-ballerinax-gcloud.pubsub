@@ -1,7 +1,7 @@
 [package]
 org = "ballerinax"
 name = "gcloud.pubsub"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Ballerina"]
 keywords = ["pubsub", "google cloud", "messaging", "cloud", "gcp"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub"
@@ -15,86 +15,86 @@ observabilityIncluded=true
 [[platform.java21.dependency]]
 groupId = "io.ballerina.lib"
 artifactId = "gcloud.pubsub-native"
-version = "0.1.0"
-path = "../native/build/libs/gcloud.pubsub-native-0.1.0.jar"
+version = "0.1.1"
+path = "../native/build/libs/gcloud.pubsub-native-0.1.1-SNAPSHOT.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.cloud"
 artifactId = "google-cloud-pubsub"
-version = "1.132.1"
-path = "./lib/google-cloud-pubsub-1.132.1.jar"
+version = "1.143.0"
+path = "./lib/google-cloud-pubsub-1.143.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api"
 artifactId = "gax"
-version = "2.52.0"
-path = "./lib/gax-2.52.0.jar"
+version = "2.71.0"
+path = "./lib/gax-2.71.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api"
 artifactId = "gax-grpc"
-version = "2.52.0"
-path = "./lib/gax-grpc-2.52.0.jar"
+version = "2.71.0"
+path = "./lib/gax-grpc-2.71.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.auth"
 artifactId = "google-auth-library-credentials"
-version = "1.24.1"
-path = "./lib/google-auth-library-credentials-1.24.1.jar"
+version = "1.40.0"
+path = "./lib/google-auth-library-credentials-1.40.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.auth"
 artifactId = "google-auth-library-oauth2-http"
-version = "1.24.1"
-path = "./lib/google-auth-library-oauth2-http-1.24.1.jar"
+version = "1.40.0"
+path = "./lib/google-auth-library-oauth2-http-1.40.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-netty-shaded"
-version = "1.75.0"
-path = "./lib/grpc-netty-shaded-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-netty-shaded-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-api"
-version = "1.75.0"
-path = "./lib/grpc-api-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-api-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-core"
-version = "1.75.0"
-path = "./lib/grpc-core-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-core-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-auth"
-version = "1.75.0"
-path = "./lib/grpc-auth-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-auth-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-stub"
-version = "1.75.0"
-path = "./lib/grpc-stub-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-stub-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-protobuf"
-version = "1.75.0"
-path = "./lib/grpc-protobuf-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-protobuf-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-protobuf-lite"
-version = "1.75.0"
-path = "./lib/grpc-protobuf-lite-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-protobuf-lite-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-context"
-version = "1.75.0"
-path = "./lib/grpc-context-1.75.0.jar"
+version = "1.76.0"
+path = "./lib/grpc-context-1.76.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api.grpc"
@@ -123,8 +123,8 @@ path = "./lib/proto-google-iam-v1-1.37.0.jar"
 [[platform.java21.dependency]]
 groupId = "com.google.protobuf"
 artifactId = "protobuf-java"
-version = "3.25.5"
-path = "./lib/protobuf-java-3.25.5.jar"
+version = "4.33.0"
+path = "./lib/protobuf-java-4.33.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api"
@@ -153,8 +153,8 @@ path = "./lib/opencensus-contrib-http-util-0.31.1.jar"
 [[platform.java21.dependency]]
 groupId = "com.google.guava"
 artifactId = "guava"
-version = "33.2.1-jre"
-path = "./lib/guava-33.2.1-jre.jar"
+version = "33.5.0-jre"
+path = "./lib/guava-33.5.0-jre.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.guava"
@@ -165,8 +165,8 @@ path = "./lib/failureaccess-1.0.2.jar"
 [[platform.java21.dependency]]
 groupId = "org.threeten"
 artifactId = "threetenbp"
-version = "1.6.9"
-path = "./lib/threetenbp-1.6.9.jar"
+version = "1.7.2"
+path = "./lib/threetenbp-1.7.2.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.j2objc"
@@ -183,8 +183,8 @@ path = "./lib/jsr305-3.0.2.jar"
 [[platform.java21.dependency]]
 groupId = "com.google.errorprone"
 artifactId = "error_prone_annotations"
-version = "2.36.0"
-path = "./lib/error_prone_annotations-2.36.0.jar"
+version = "2.41.0"
+path = "./lib/error_prone_annotations-2.41.0.jar"
 
 [[platform.java21.dependency]]
 groupId = "com.google.api-client"

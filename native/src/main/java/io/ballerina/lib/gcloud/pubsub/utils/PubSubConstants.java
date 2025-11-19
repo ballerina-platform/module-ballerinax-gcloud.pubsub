@@ -25,22 +25,13 @@ import io.ballerina.runtime.api.values.BString;
  * Constants for Google Cloud Pub/Sub module.
  */
 public class PubSubConstants {
-
-    // Module constants
-    public static final String PACKAGE_ORG = "ballerinax";
-    public static final String PACKAGE_NAME = "gcloud.pubsub";
-
     // Native data keys
-    public static final String NATIVE_PUBLISHER = "NATIVE_PUBLISHER";
     public static final String NATIVE_SUBSCRIBER = "NATIVE_SUBSCRIBER";
     public static final String NATIVE_SUBSCRIPTION_NAME = "NATIVE_SUBSCRIPTION_NAME";
     public static final String ACK_REPLY_CONSUMER = "ACK_REPLY_CONSUMER";
     public static final String CONSUMER_SERVICES = "CONSUMER_SERVICES";
     public static final String STARTED_SERVICES = "STARTED_SERVICES";
     public static final String CONFIG = "CONFIG";
-
-    // Error type
-    public static final String ERROR_TYPE = "Error";
 
     // Ballerina types
     public static final String CALLER = "Caller";
@@ -50,13 +41,6 @@ public class PubSubConstants {
     // Ballerina type field names
     public static final BString PROJECT_ID_FIELD = StringUtils.fromString("projectId");
     public static final BString CREDENTIALS_FIELD = StringUtils.fromString("credentials");
-    public static final BString ENABLE_BATCHING_FIELD = StringUtils.fromString("enableBatching");
-    public static final BString BATCH_SETTINGS_FIELD = StringUtils.fromString("batchSettings");
-    public static final BString ENABLE_MESSAGE_ORDERING_FIELD = StringUtils.fromString("enableMessageOrdering");
-
-    public static final BString ELEMENT_COUNT_THRESHOLD_FIELD = StringUtils.fromString("elementCountThreshold");
-    public static final BString REQUEST_BYTE_SIZE_THRESHOLD_FIELD = StringUtils.fromString("requestByteSizeThreshold");
-    public static final BString DELAY_THRESHOLD_MILLIS_FIELD = StringUtils.fromString("delayThresholdMillis");
 
     public static final BString DATA_FIELD = StringUtils.fromString("data");
     public static final BString ATTRIBUTES_FIELD = StringUtils.fromString("attributes");

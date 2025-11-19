@@ -24,30 +24,63 @@ public type Credentials record {|
     string credentialsJson?;
 |};
 
-# Represents batch settings for the publisher.
-#
-# + elementCountThreshold - Maximum number of messages in a batch (default: 100)
-# + requestByteSizeThreshold - Maximum size of a batch in bytes (default: 1000000)
-# + delayThresholdMillis - Maximum delay before sending a batch in milliseconds (default: 10)
-public type BatchSettings record {|
-    int elementCountThreshold = 100;
-    int requestByteSizeThreshold = 1000000;
-    int delayThresholdMillis = 10;
+# Configuration for the Google Cloud Pub/Sub Publisher.
+public type PublisherConfiguration record {|
+    # Configuration for publishing message batch
+    BatchConfig batchConfig?;
+    # Message compression configurations
+    record {|
+        # Compression threshold in bytes. Messages larger than this size will be compressed
+        int threshold = 240;
+    |} compression?;
+    # GCP pub/sub authentication configurations
+    GcpCredentialConfig auth?;
+    # Enable message ordering to ensure messages are received in the order they were published
+    boolean enableMessageOrdering = false;
+    # Retry configuration for handling transient failures
+    RetryConfig retryConfig?;
 |};
 
-# Represents configuration for the Google Cloud Pub/Sub publisher.
-#
-# + projectId - Google Cloud project ID
-# + credentials - Authentication credentials
-# + enableBatching - When enabled, the publisher will batch messages before sending
-# + batchSettings - Batch configuration settings
-# + enableMessageOrdering - When enabled, the publisher will publish messages with ordering keys
-public type PublisherConfiguration record {|
-    string projectId;
-    Credentials credentials?;
-    boolean enableBatching = true;
-    BatchSettings batchSettings?;
-    boolean enableMessageOrdering = false;
+# Message batching settings for the Publisher.
+public type BatchConfig record {|
+    # The maximum delay before sending a batch (in seconds). Default in GCP is 1 millisecond
+    decimal maxDelay = 0.001;
+    # The maximum number of messages to include in a single batch
+    int maxMessageCount = 100;
+    # The maximum total size in bytes for a single batch. Default in GCP: 1000 bytes (or 1KB)
+    int maxBytes = 1000;
+|};
+
+# GCP Pub/Sub client retry configuration for handling transient failures.
+public type RetryConfig record {|
+    # Maximum number of retry attempts for a failed publish operation.
+    # If set to 0, the logic uses `totalTimeout` to determine retries instead.
+    int maxAttempts;
+    # Initial delay before the first retry attempt (in seconds).
+    # Subsequent retry delays are calculated using this value multiplied by `retryDelayMultiplier`.
+    decimal initialRetryDelay = 0.1;
+    # Initial timeout for the first RPC call (in seconds).
+    # Subsequent RPC timeouts are calculated using this value multiplied by `rpcTimeoutMultiplier`.
+    decimal initialRpcTimeout = 5.0;
+    # Maximum delay between retry attempts (in seconds).
+    # Limits how much the retry delay can increase through exponential backoff.
+    decimal maxRetryDelay = 60.0;
+    # Maximum timeout for any single RPC call (in seconds).
+    # Limits how much the RPC timeout can increase.
+    decimal maxRpcTimeout = 60.0;
+    # Multiplier applied to the retry delay after each failed attempt for exponential backoff
+    float retryDelayMultiplier = 4.0;
+    # Multiplier applied to the RPC timeout after each failed attempt
+    float rpcTimeoutMultiplier = 4.0;
+    # Total timeout for all retry attempts combined (in seconds).
+    # If set to 0, the logic uses `maxAttempts` to determine retries instead.
+    decimal totalTimeout = 600.0;
+|};
+
+# Configuration for authenticating with Google Cloud Pub/Sub using a service account key file.
+public type GcpCredentialConfig record {|
+    # Path to the service account JSON key file
+    string path;
 |};
 
 # Represents configuration for the Google Cloud Pub/Sub listener.

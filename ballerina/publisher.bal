@@ -19,53 +19,46 @@ import ballerina/jballerina.java;
 # Represents a Google Cloud Pub/Sub publisher endpoint.
 public client isolated class Publisher {
 
-    # Creates a new `gcloud.pubsub:Publisher`.
+    # Initializes a new GCP Pub/Sub Publisher instance.
+    # ```ballerina
+    # pubsub:Publisher publisher = check new ("<gcp-project-id>", "<topic-name>");
+    # ```
     #
-    # + topicName - The name of the topic to publish to (format: projects/{project-id}/topics/{topic-name})
-    # + config - Configurations related to initializing the publisher
-    # + return - A `gcloud.pubsub:Error` if initialization fails or else '()'
-    public isolated function init(string topicName, *PublisherConfiguration config) returns Error? {
-        check self.publisherInit(topicName, config);
+    # + project - The Google Cloud project ID
+    # + topic - The name of the Pub/Sub topic to publish to
+    # + config - GCP Pub/Sub Publisher configuration
+    # + return - A `pubsub:Error` if initialization fails or else `()`
+    public isolated function init(string project, string topic, *PublisherConfiguration config) returns Error? {
+        return self.externInit(project, topic, config);
     }
 
-    private isolated function publisherInit(string topicName, *PublisherConfiguration config) returns Error? =
+    private isolated function externInit(string project, string topic, *PublisherConfiguration config) returns Error? =
     @java:Method {
         name: "init",
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.publisher.Actions"
     } external;
 
-    # Publishes a message to the topic.
+    # Publishes a message to a GCp topic.
     # ```ballerina
-    # string|gcloud.pubsub:Error? result = publisher->publish({data: "Hello World".toBytes()});
+    # string|pubsub:Error result = publisher->publish({data: "Hello World".toBytes()});
     # ```
     #
     # + message - Message to be published
-    # + return - The message ID as a string or a `gcloud.pubsub:Error` if the publish operation fails
+    # + return - The message ID if the operation was successful or a `pubsub:Error` if the publish operation fails
     isolated remote function publish(Message message) returns string|Error =
     @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
-    } external;
-
-    # Publishes multiple messages to the topic.
-    # ```ballerina
-    # string[]|gcloud.pubsub:Error? result = publisher->publishBatch([{data: "Message 1".toBytes()}, {data: "Message 2".toBytes()}]);
-    # ```
-    #
-    # + messages - Array of messages to be published
-    # + return - The message IDs as an array of strings or a `gcloud.pubsub:Error` if the publish operation fails
-    isolated remote function publishBatch(Message[] messages) returns string[]|Error =
-    @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.publisher.Actions"
     } external;
 
     # Closes the publisher and releases all resources.
     # ```ballerina
-    # gcloud.pubsub:Error? result = publisher->close();
+    # pubsub:Error? result = publisher->close();
     # ```
     #
-    # + return - A `gcloud.pubsub:Error` if closing the publisher fails or else '()'
-    isolated remote function close() returns Error? =
+    # + timeout - The maximum time to wait for the publisher to terminate (in seconds)
+    # + return - A `pubsub:Error` if closing the publisher fails or else '()'
+    isolated remote function close(decimal timeout = 10.0) returns Error? =
     @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.publisher.PublisherActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.publisher.Actions"
     } external;
 }

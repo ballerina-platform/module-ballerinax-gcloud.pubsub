@@ -22,6 +22,7 @@ import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.pubsub.v1.PubsubMessage;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.ballerina.lib.gcloud.pubsub.ModuleUtils;
 import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
 import io.ballerina.runtime.api.Runtime;
 import io.ballerina.runtime.api.concurrent.StrandMetadata;
@@ -142,7 +143,7 @@ public class MessageDispatcher {
         BMap<BString, Object> ballerinaMessage = convertToBallerinaMessage(message);
 
         // Create Caller object
-        BObject caller = ValueCreator.createObjectValue(PubSubUtils.getModule(), CALLER);
+        BObject caller = ValueCreator.createObjectValue(ModuleUtils.getModule(), CALLER);
         caller.addNativeData(ACK_REPLY_CONSUMER, consumer);
 
         // Prepare arguments for service method (message, caller)
@@ -193,7 +194,7 @@ public class MessageDispatcher {
      */
     private BMap<BString, Object> convertToBallerinaMessage(PubsubMessage message) {
         BMap<BString, Object> ballerinaMessage = ValueCreator.createRecordValue(
-                PubSubUtils.getModule(), MESSAGE);
+                ModuleUtils.getModule(), MESSAGE);
 
         // Set message ID
         ballerinaMessage.put(MESSAGE_ID_FIELD, StringUtils.fromString(message.getMessageId()));
