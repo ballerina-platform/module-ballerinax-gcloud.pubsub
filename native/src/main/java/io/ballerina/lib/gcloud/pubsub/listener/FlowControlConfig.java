@@ -18,29 +18,34 @@
 
 package io.ballerina.lib.gcloud.pubsub.listener;
 
-import io.ballerina.lib.gcloud.pubsub.config.GcpCredentialConfig;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 
 /**
- * Represents the configuration for a Google Cloud Pub/Sub listener.
+ * Flow control configuration for managing outstanding messages.
  *
- * @param auth GCP pub/sub authentication configurations
+ * @param maxOutstandingMessageCount Maximum number of outstanding messages
+ * @param maxOutstandingRequestBytes Maximum total size of outstanding messages in bytes
  */
-public record ListenerConfiguration(GcpCredentialConfig auth) {
+public record FlowControlConfig(
+        long maxOutstandingMessageCount,
+        long maxOutstandingRequestBytes) {
 
-    private static final BString AUTH = StringUtils.fromString("auth");
+    private static final BString MAX_OUTSTANDING_MESSAGE_COUNT = StringUtils.fromString(
+            "maxOutstandingMessageCount");
+    private static final BString MAX_OUTSTANDING_REQUEST_BYTES = StringUtils.fromString(
+            "maxOutstandingRequestBytes");
 
     /**
-     * Constructor to create ListenerConfiguration from Ballerina configuration map.
+     * Constructor to create FlowControlConfig from Ballerina configuration.
      *
      * @param config Ballerina configuration map
      */
-    public ListenerConfiguration(BMap<BString, Object> config) {
+    public FlowControlConfig(BMap<BString, Object> config) {
         this(
-                !config.containsKey(AUTH) ? null :
-                        new GcpCredentialConfig((BMap<BString, Object>) config.getMapValue(AUTH))
+                config.getIntValue(MAX_OUTSTANDING_MESSAGE_COUNT),
+                config.getIntValue(MAX_OUTSTANDING_REQUEST_BYTES)
         );
     }
 }

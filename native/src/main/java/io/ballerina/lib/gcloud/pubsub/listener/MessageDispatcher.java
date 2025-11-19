@@ -22,8 +22,8 @@ import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.pubsub.v1.PubsubMessage;
 import io.ballerina.lib.gcloud.pubsub.ModuleUtils;
 import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
-import io.ballerina.runtime.api.concurrent.StrandMetadata;
 import io.ballerina.runtime.api.Runtime;
+import io.ballerina.runtime.api.concurrent.StrandMetadata;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.Parameter;
 import io.ballerina.runtime.api.types.RemoteMethodType;
@@ -36,6 +36,8 @@ import io.ballerina.runtime.api.values.BObject;
 import java.io.PrintStream;
 import java.util.Optional;
 
+import static io.ballerina.lib.gcloud.pubsub.listener.Caller.NATIVE_CONSUMER;
+
 /**
  * A {MessageDispatcher} dispatches GCP Pub/Sub messages into the Ballerina GCP Pub/Sub service.
  */
@@ -44,10 +46,10 @@ public class MessageDispatcher {
     private static final String ON_ERROR_METHOD = "onError";
     private static final String ON_MESSAGE_METHOD = "onMessage";
     private static final String BCALLER_NAME = "Caller";
-    private static final String NATIVE_CONSUMER = "native.consumer";
 
     private final Runtime ballerinaRuntime;
     private final Service nativeService;
+    private final OnMsgCallback onMsgCallback = new OnMsgCallback();
     private final OnErrorCallback onErrorCallback = new OnErrorCallback();
 
     MessageDispatcher(Runtime ballerinaRuntime, Service nativeService) {
@@ -55,7 +57,7 @@ public class MessageDispatcher {
         this.nativeService = nativeService;
     }
 
-    public void onMessage(PubsubMessage message, AckReplyConsumer consumer, OnMsgCallback onMsgCallback) {
+    public void onMessage(PubsubMessage message, AckReplyConsumer consumer) {
         Thread.startVirtualThread(() -> {
             try {
                 boolean isConcurrentSafe = nativeService.isOnMessageMethodIsolated();

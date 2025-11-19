@@ -26,11 +26,11 @@ import io.ballerina.runtime.api.values.BString;
 /**
  * Represents the configuration for a Google Cloud Pub/Sub Publisher.
  *
- * @param batchConfig Message batching settings for the Publisher
- * @param compression Message compression configurations
- * @param auth GCP pub/sub authentication configurations
+ * @param batchConfig           Message batching settings for the Publisher
+ * @param compression           Message compression configurations
+ * @param auth                  GCP pub/sub authentication configurations
  * @param enableMessageOrdering Enable message ordering to ensure messages are received in the order they were published
- * @param retryConfig Retry configuration for handling transient failures
+ * @param retryConfig           Retry configuration for handling transient failures
  */
 public record PublisherConfiguration(
         BatchConfig batchConfig,
