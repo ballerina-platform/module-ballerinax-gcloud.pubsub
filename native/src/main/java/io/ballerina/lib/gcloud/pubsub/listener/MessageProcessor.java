@@ -85,4 +85,11 @@ public class MessageProcessor {
             Thread.currentThread().interrupt();
         }
     }
+
+    public void immediateStop() {
+        this.executorService.shutdown();
+        if (!this.executorService.isTerminated()) {
+            this.executorService.shutdownNow();
+        }
+    }
 }

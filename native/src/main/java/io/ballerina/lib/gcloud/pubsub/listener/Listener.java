@@ -150,7 +150,21 @@ public final class Listener {
     }
 
     public static Object immediateStop(BObject bListener) {
-        return gracefulStop(bListener);
+        List<BObject> bServices = (List<BObject>) bListener.getNativeData(NATIVE_SERVICE_LIST);
+        try {
+            for (BObject bService : bServices) {
+                Subscriber subscriber = (Subscriber) bService.getNativeData(NATIVE_SUBSCRIBER);
+                MessageProcessor processor = (MessageProcessor) bService.getNativeData(NATIVE_PROCESSOR);
+                subscriber.stopAsync().awaitTerminated();
+                processor.immediateStop();
+            }
+        } catch (Exception e) {
+            String errorMsg = Objects.isNull(e.getMessage()) ? "Unknown error" : e.getMessage();
+            return PubSubUtils.createError(
+                    String.format("Error occurred while immediately stopping the Ballerina GCP Pub/Sub listener: %s",
+                            errorMsg), e);
+        }
+        return null;
     }
 
     private static Subscriber createPubSubSubscriber(String project, ServiceConfig svcConfig,
