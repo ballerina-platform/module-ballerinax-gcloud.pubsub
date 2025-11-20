@@ -177,7 +177,7 @@ service on pubsubListener {
     subscription
 }
 service on pubsubListener {
-    remote function onMessage(pubsub:PubSubMessage message, pubsub:Caller caller) returns error? {
+    remote function onMessage(pubsub:Message message, pubsub:Caller caller) returns error? {
         // Process the message
         error? result = processMessage(message);
 
