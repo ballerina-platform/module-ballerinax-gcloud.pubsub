@@ -92,12 +92,12 @@ public class Service {
         }
 
         if (service.getResourceMethods().length > 0) {
-            throw PubSubUtils.createError("IBM MQ service cannot have resource methods.");
+            throw PubSubUtils.createError("GCP Pub/Sub service cannot have resource methods.");
         }
 
         RemoteMethodType[] remoteMethods = service.getRemoteMethods();
         if (remoteMethods.length < 1 || remoteMethods.length > 2) {
-            throw PubSubUtils.createError("IBM MQ service must have exactly one or two remote methods.");
+            throw PubSubUtils.createError("GCP Pub/Sub service must have exactly one or two remote methods.");
         }
 
         for (RemoteMethodType remoteMethod: remoteMethods) {

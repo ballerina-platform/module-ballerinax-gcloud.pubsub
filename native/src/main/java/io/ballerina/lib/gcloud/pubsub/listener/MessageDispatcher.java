@@ -75,7 +75,7 @@ public class MessageDispatcher {
             } catch (Exception e) {
                 consumer.nack();
                 BError bError = PubSubUtils.createError(
-                        "Unexpected error occurred while receiving messages from the broker: " +
+                        "Unexpected error occurred while receiving messages from GCP Pub/Sub: " +
                                 e.getMessage(), e);
                 onErrorCallback.notifyFailure(bError);
             }
