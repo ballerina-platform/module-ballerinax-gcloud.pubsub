@@ -28,14 +28,14 @@ import static io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils.decimalToMillis;
 /**
  * GCP Pub/Sub client retry configuration for handling transient failures.
  *
- * @param maxAttempts Maximum number of retry attempts for a failed publish operation
- * @param initialRetryDelay Initial delay before the first retry attempt (in milliseconds)
- * @param initialRpcTimeout Initial timeout for the first RPC call (in milliseconds)
- * @param maxRetryDelay Maximum delay between retry attempts (in milliseconds)
- * @param maxRpcTimeout Maximum timeout for any single RPC call (in milliseconds)
+ * @param maxAttempts          Maximum number of retry attempts for a failed publish operation
+ * @param initialRetryDelay    Initial delay before the first retry attempt (in milliseconds)
+ * @param initialRpcTimeout    Initial timeout for the first RPC call (in milliseconds)
+ * @param maxRetryDelay        Maximum delay between retry attempts (in milliseconds)
+ * @param maxRpcTimeout        Maximum timeout for any single RPC call (in milliseconds)
  * @param retryDelayMultiplier Multiplier applied to the retry delay after each failed attempt for exponential backoff
  * @param rpcTimeoutMultiplier Multiplier applied to the RPC timeout after each failed attempt
- * @param totalTimeout Total timeout for all retry attempts combined (in milliseconds)
+ * @param totalTimeout         Total timeout for all retry attempts combined (in milliseconds)
  */
 public record RetryConfig(
         int maxAttempts,

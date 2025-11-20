@@ -20,21 +20,21 @@ import ballerina/jballerina.java;
 # Provides a listener to consume messages asynchronously from a Google Cloud Pub/Sub subscription.
 public isolated class Listener {
 
-    # Initializes a Listener object with the given subscription and configuration.
+    # Initializes a GCP Pub/Sub listener instance.
     # ```ballerina
-    # pubsub:Listener pubsubListener = check new("my-subscription", projectId = "my-project");
+    # pubsub:Listener pubsubListener = check new("<gcp-project-id>");
     # ```
     #
-    # + subscriptionName - The subscription name or full path
-    # + listenerConfig - The listener configuration
-    public isolated function init(string subscriptionName, *ListenerConfiguration listenerConfig) returns Error? {
-        return self.listenerInit(subscriptionName, listenerConfig);
+    # + project - The Google Cloud project ID
+    # + config - The listener configuration
+    public isolated function init(string project, *ListenerConfiguration config) returns Error? {
+        return self.externInit(project, config);
     }
 
-    private isolated function listenerInit(string subscriptionName, ListenerConfiguration config) returns Error? =
+    private isolated function externInit(string project, ListenerConfiguration config) returns Error? =
     @java:Method {
         name: "init",
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.listener.Listener"
     } external;
 
     # Attaches the service to the `pubsub:Listener` endpoint.
@@ -47,7 +47,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure to register the service
     public isolated function attach(Service s, string[]|string? name = ()) returns error? =
     @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.listener.Listener"
     } external;
 
     # Starts consuming messages on the attached service.
@@ -59,7 +59,7 @@ public isolated class Listener {
     public isolated function 'start() returns error? =
     @java:Method {
         name: "start",
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.listener.Listener"
     } external;
 
     # Detaches a service from the `pubsub:Listener` endpoint.
@@ -71,7 +71,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure to detach the service
     public isolated function detach(Service s) returns error? =
     @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.listener.Listener"
     } external;
 
     # Stops consuming messages and gracefully shuts down the subscriber.
@@ -82,7 +82,7 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure
     public isolated function gracefulStop() returns error? =
     @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.listener.Listener"
     } external;
 
     # Immediately stops consuming messages and terminates the subscriber.
@@ -93,21 +93,6 @@ public isolated class Listener {
     # + return - `()` or else a `pubsub:Error` upon failure
     public isolated function immediateStop() returns error? =
     @java:Method {
-        'class: "io.ballerina.lib.gcloud.pubsub.nativeimpl.subscriber.ListenerActions"
+        'class: "io.ballerina.lib.gcloud.pubsub.listener.Listener"
     } external;
 }
-
-# Configurations for the Pub/Sub service.
-#
-# + subscriptionName - The subscription name
-public type PubSubServiceConfig record {|
-    string subscriptionName;
-|};
-
-# The annotation to configure the Pub/Sub service.
-public annotation PubSubServiceConfig ServiceConfig on service, class;
-
-# The Pub/Sub service type.
-public type Service distinct service object {
-    // remote function onMessage(Message message, Caller caller) returns error?;
-};

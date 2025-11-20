@@ -13,16 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-import ballerina/time;
 
-# Represents credentials for authenticating with Google Cloud Pub/Sub.
-#
-# + credentialsPath - Path to the service account JSON key file
-# + credentialsJson - Service account JSON key as a string
-public type Credentials record {|
-    string credentialsPath?;
-    string credentialsJson?;
-|};
+import ballerina/time;
 
 # Configuration for the Google Cloud Pub/Sub Publisher.
 public type PublisherConfiguration record {|
@@ -83,15 +75,6 @@ public type GcpCredentialConfig record {|
     string path;
 |};
 
-# Represents configuration for the Google Cloud Pub/Sub listener.
-#
-# + projectId - Google Cloud project ID
-# + credentials - Authentication credentials
-public type ListenerConfiguration record {|
-    string projectId;
-    Credentials credentials?;
-|};
-
 # Represents a message to be published to Google Cloud Pub/Sub.
 #
 # + messageId - Unique message identifier (Set by the broker upon publishing. Do not set manually)
@@ -99,7 +82,7 @@ public type ListenerConfiguration record {|
 # + attributes - Message attributes (key-value pairs)
 # + publishTime - Time when the message was published (Set by the broker upon publishing. Do not set manually)
 # + orderingKey - Ordering key for ordered delivery. Messages with the same ordering key are delivered in order.
-#                 `enableMessageOrdering` must be set to true in publisher configuration to use this feature
+# `enableMessageOrdering` must be set to true in publisher configuration to use this feature
 public type Message record {|
     string messageId?;
     byte[] data;
@@ -107,3 +90,53 @@ public type Message record {|
     time:Utc publishTime?;
     string orderingKey?;
 |};
+
+# Configuration for the Google Cloud Pub/Sub Listener.
+public type ListenerConfiguration record {|
+    # GCP authentication configuration using service account credentials
+    GcpCredentialConfig auth?;
+|};
+
+# Service-specific configuration for a Pub/Sub subscription.
+public type ServiceConfiguration record {|
+    # The name of the Pub/Sub subscription to pull messages from
+    string subscription;
+    # Maximum period a message ack deadline will be extended (in seconds).
+    # Recommended to set this to a reasonable upper bound of the subscriber time to process any message.
+    # A zero duration effectively disables auto deadline extensions.
+    decimal maxAckExtensionPeriod = 3600;
+    # Upper bound for a single ack deadline extension period (in seconds).
+    # The ack deadline will continue to be extended by up to this duration until maxAckExtensionPeriod is reached.
+    # This bounds the maximum amount of time before a message re-delivery if the Subscriber fails to extend the deadline.
+    decimal maxDurationPerAckExtension = 600;
+    # Minimum duration for each acknowledgment deadline extension (in seconds).
+    # Specifies the minimum amount of time that must pass before the redelivery of a message occurs.
+    # Set this to a high value for exactly-once delivery scenarios to ensure ack IDs remain valid.
+    decimal minDurationPerAckExtension = 0.0;
+    # Number of StreamingPull streams to pull messages from the subscription.
+    # Increasing this value allows parallel message processing and higher throughput.
+    int parallelPullCount = 1;
+    # Flow control settings for managing outstanding messages
+    FlowControlConfig flowControlSettings?;
+|};
+
+# Configuration to control the maximum number and size of outstanding messages received from the subscriber
+# but not yet acknowledged or negatively acknowledged). When limits are exceeded, the subscriber
+# stops pulling more messages until outstanding messages are processed.
+public type FlowControlConfig record {|
+    # Maximum number of outstanding messages.
+    # The subscriber will not pull more messages if this limit is reached.
+    int maxOutstandingMessageCount = 1000;
+    # Maximum total size of outstanding messages in bytes.
+    # The subscriber will not pull more messages if this limit is reached.
+    # Default is 100MB
+    int maxOutstandingRequestBytes = 104857600;
+|};
+
+# The annotation to configure the Pub/Sub service.
+public annotation ServiceConfiguration ServiceConfig on service;
+
+# The Pub/Sub service type.
+public type Service distinct service object {
+    // remote function onMessage(Message message, Caller caller) returns error?;
+};

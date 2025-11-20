@@ -49,7 +49,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "gcloud.pubsub"
-version = "0.1.1"
+version = "1.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"},

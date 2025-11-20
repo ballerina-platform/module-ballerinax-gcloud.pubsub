@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Suppress EI_EXPOSE_REP and EI_EXPOSE_REP2 for SecureSocketConfig -->
+    <!-- The List fields use List.of() which returns unmodifiable lists, so these warnings are false positives -->
+    <Match>
+        <Class name="io.ballerina.lib.gcloud.pubsub.listener.MessageDispatcher"/>
+        <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+    </Match>
+    <Match>
+        <Class name="io.ballerina.lib.gcloud.pubsub.listener.MessageProcessor"/>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+    </Match>
+    <Match>
+        <Class name="io.ballerina.lib.gcloud.pubsub.listener.OnErrorCallback"/>
+        <Bug pattern="DM_EXIT"/>
+    </Match>
+    <Match>
+        <Class name="io.ballerina.lib.gcloud.pubsub.listener.Service"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+</FindBugsFilter>

@@ -28,9 +28,9 @@ import static io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils.decimalToMillis;
 /**
  * Message batching settings for the Publisher.
  *
- * @param maxDelay The maximum delay before sending a batch (in milliseconds)
+ * @param maxDelay        The maximum delay before sending a batch (in milliseconds)
  * @param maxMessageCount The maximum number of messages to include in a single batch
- * @param maxBytes The maximum total size in bytes for a single batch
+ * @param maxBytes        The maximum total size in bytes for a single batch
  */
 public record BatchConfig(
         long maxDelay,
