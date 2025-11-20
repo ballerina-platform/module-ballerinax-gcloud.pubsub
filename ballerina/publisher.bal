@@ -45,8 +45,23 @@ public client isolated class Publisher {
     #
     # + message - Message to be published
     # + return - The message ID if the operation was successful or a `pubsub:Error` if the publish operation fails
-    isolated remote function publish(Message message) returns string|Error =
-    @java:Method {
+    isolated remote function publish(Message message) returns string|Error {
+        anydata messageData = message.data;
+        byte[] data;
+        if messageData is byte[] {
+            data = messageData;
+        } else if messageData is xml {
+            data = messageData.toString().toBytes();
+        } else if messageData is string {
+            data = messageData.toBytes();
+        } else {
+            data = messageData.toJsonString().toBytes();
+        }
+        return self.externPublish({data, orderingKey: message.orderingKey, attributes: message.attributes});
+    }
+
+    isolated function externPublish(Message message) returns string|Error = @java:Method {
+        name: "publish",
         'class: "io.ballerina.lib.gcloud.pubsub.publisher.Actions"
     } external;
 
