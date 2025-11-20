@@ -54,8 +54,6 @@ public class Service {
             ModuleUtils.getModule().getOrg() + ORG_NAME_SEPARATOR +
                     ModuleUtils.getModule().getName() + VERSION_SEPARATOR +
                     ModuleUtils.getModule().getMajorVersion() + VERSION_SEPARATOR + "ServiceConfig");
-    private static final Type MSG_TYPE = ValueCreator.createRecordValue(
-            ModuleUtils.getModule(), "Message").getType();
     private static final String ON_MSG_METHOD = "onMessage";
     private static final String ON_ERR_METHOD = "onError";
     private static final String IS_PUBSUB_MSG_METHOD = "isPubSubMessage";

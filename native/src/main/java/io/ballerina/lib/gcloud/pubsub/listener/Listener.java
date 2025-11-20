@@ -65,7 +65,7 @@ public final class Listener {
     public static Object attach(Environment env, BObject bListener, BObject bService, Object name) {
         Object started = bListener.getNativeData(LISTENER_STARTED);
         try {
-            Service.validateService(bService);
+            Service.validateService(env.getRuntime(), bService);
             Service nativeService = new Service(bService);
             String project = (String) bListener.getNativeData(GCP_PROJECT_ID);
             ListenerConfiguration listenerConfig = (ListenerConfiguration) bListener.getNativeData(LISTENER_CONFIG);
