@@ -74,7 +74,7 @@ public final class Listener {
             Subscriber subscriber = createPubSubSubscriber(
                     project, nativeService.getServiceConfig(), listenerConfig, messageProcessor.gcpPubSubReceiver());
             bService.addNativeData(NATIVE_SERVICE, nativeService);
-            bListener.addNativeData(NATIVE_SUBSCRIBER, subscriber);
+            bService.addNativeData(NATIVE_SUBSCRIBER, subscriber);
             bService.addNativeData(NATIVE_PROCESSOR, messageProcessor);
             List<BObject> serviceList = (List<BObject>) bListener.getNativeData(NATIVE_SERVICE_LIST);
             serviceList.add(bService);
