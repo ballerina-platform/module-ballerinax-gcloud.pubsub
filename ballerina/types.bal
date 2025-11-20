@@ -78,7 +78,7 @@ public type GcpCredentialConfig record {|
 # Represents a message to be published to Google Cloud Pub/Sub.
 #
 # + messageId - Unique message identifier (Set by the broker upon publishing. Do not set manually)
-# + data - Message data as bytes
+# + data - The message payload
 # + attributes - Message attributes (key-value pairs)
 # + publishTime - Time when the message was published (Set by the broker upon publishing. Do not set manually)
 # + orderingKey - Ordering key for ordered delivery. Messages with the same ordering key are delivered in order.
