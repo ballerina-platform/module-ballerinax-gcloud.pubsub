@@ -85,7 +85,7 @@ public type GcpCredentialConfig record {|
 # `enableMessageOrdering` must be set to true in publisher configuration to use this feature
 public type Message record {|
     string messageId?;
-    byte[] data;
+    anydata data;
     map<string> attributes?;
     time:Utc publishTime?;
     string orderingKey?;
