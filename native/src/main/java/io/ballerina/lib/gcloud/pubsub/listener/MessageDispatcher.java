@@ -20,6 +20,7 @@ package io.ballerina.lib.gcloud.pubsub.listener;
 
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.pubsub.v1.PubsubMessage;
+import io.ballerina.lib.gcloud.pubsub.DataBindingException;
 import io.ballerina.lib.gcloud.pubsub.ModuleUtils;
 import io.ballerina.lib.gcloud.pubsub.utils.PubSubUtils;
 import io.ballerina.runtime.api.Runtime;
@@ -34,6 +35,7 @@ import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BObject;
 
 import java.io.PrintStream;
+import java.util.Objects;
 import java.util.Optional;
 
 import static io.ballerina.lib.gcloud.pubsub.listener.Caller.NATIVE_CONSUMER;
@@ -72,17 +74,20 @@ public class MessageDispatcher {
             } catch (BError e) {
                 consumer.nack();
                 onMsgCallback.notifyFailure(e);
+            } catch (DataBindingException dataBindingExp) {
+                consumer.nack();
+                onError(dataBindingExp);
             } catch (Exception e) {
                 consumer.nack();
                 BError bError = PubSubUtils.createError(
-                        "Unexpected error occurred while receiving messages from GCP Pub/Sub: " +
+                        "Unexpected error occurred while dispatching messages received from GCP Pub/Sub: " +
                                 e.getMessage(), e);
                 onErrorCallback.notifyFailure(bError);
             }
         });
     }
 
-    private Object[] getOnMessageParams(PubsubMessage message, AckReplyConsumer consumer) {
+    private Object[] getOnMessageParams(PubsubMessage message, AckReplyConsumer consumer) throws DataBindingException {
         Parameter[] parameters = this.nativeService.getOnMessageMethod().getParameters();
         Object[] args = new Object[parameters.length];
         int idx = 0;
@@ -93,7 +98,8 @@ public class MessageDispatcher {
                     args[idx++] = getCaller(consumer);
                     break;
                 case TypeTags.RECORD_TYPE_TAG:
-                    args[idx++] = MessageConverter.toBallerinaMessage(message);
+                    args[idx++] = MessageConverter.toBallerinaMessage(
+                            message, ValueCreator.createTypedescValue(referredType));
                     break;
             }
         }
@@ -109,13 +115,15 @@ public class MessageDispatcher {
     public void onError(Throwable t) {
         Thread.startVirtualThread(() -> {
             try {
-                ERR_OUT.println("Unexpected error occurred while message processing: " + t.getMessage());
                 Optional<RemoteMethodType> onError = nativeService.getOnError();
                 if (onError.isEmpty()) {
+                    ERR_OUT.println("Error occurred while dispatching messages: " + t.getMessage());
                     t.printStackTrace();
                     return;
                 }
-                BError error = PubSubUtils.createError("Failed to fetch the message", t);
+                String errMsg = constructErrorMsg(t);
+                BError error = PubSubUtils.createError(
+                        String.format("Error occurred while dispatching messages: %s", errMsg), t);
                 boolean isConcurrentSafe = nativeService.isOnErrorMethodIsolated();
                 StrandMetadata metadata = new StrandMetadata(isConcurrentSafe, null);
                 Object result = ballerinaRuntime.callMethod(
@@ -125,5 +133,15 @@ public class MessageDispatcher {
                 onErrorCallback.notifyFailure(err);
             }
         });
+    }
+
+    private static String constructErrorMsg(Throwable t) {
+        String errMsg;
+        if (Objects.nonNull(t.getMessage())) {
+            errMsg = t.getMessage();
+        } else {
+            errMsg = "Unknown error occurred";
+        }
+        return errMsg;
     }
 }
