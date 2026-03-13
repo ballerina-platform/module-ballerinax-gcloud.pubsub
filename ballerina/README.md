@@ -1,5 +1,9 @@
 ## Overview
 
+Google Cloud Pub/Sub is an asynchronous messaging service that decouples services that produce events from services that process events. It provides highly reliable and scalable event distribution for modern cloud applications. The GCloud PubSub connector enables seamless integration with Google Cloud Pub/Sub, allowing you to build reactive and event-driven systems.
+
+### Key Features
+
 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) is a fully managed, real-time messaging service that enables 
 asynchronous communication between independent applications. It provides a scalable, durable message ingestion and 
 delivery system that decouples services, allowing them to communicate reliably at scale. 
