@@ -1,15 +1,15 @@
 ## Overview
 
-[Google Cloud Pub/Sub](https://cloud.google.com/pubsub) is a fully managed, real-time messaging service that enables 
-asynchronous communication between independent applications. It provides a scalable, durable message ingestion and 
-delivery system that decouples services, allowing them to communicate reliably at scale. 
-Pub/Sub supports multiple messaging patterns including publish/subscribe, push and pull delivery, and dead-letter queues, 
-making it ideal for event-driven architectures, streaming analytics, and data integration pipelines.
+Google Cloud Pub/Sub is an asynchronous messaging service that decouples services that produce events from services that process events. It provides highly reliable and scalable event distribution for modern cloud applications. The GCloud PubSub connector enables seamless integration with Google Cloud Pub/Sub, allowing you to build reactive and event-driven systems.
 
-The ballerinax/googleapis.pubsub package provides APIs to interact with Google Cloud Pub/Sub. 
-It allows developers to programmatically publish messages to topics, create and manage subscriptions, configure message delivery policies, 
-and implement robust, cloud-native event-driven solutions that leverage Google Cloud's globally distributed infrastructure 
-and automatic scaling capabilities within Ballerina applications.
+### Key Features
+
+- Highly reliable and scalable asynchronous messaging
+- Support for both push and pull message delivery
+- Seamless integration with Google Cloud ecosystem
+- Secure communication with OAuth2 and IAM
+- Simplified management of topics and subscriptions
+- GraalVM compatible for native image builds
 
 ## Setup guide
 
