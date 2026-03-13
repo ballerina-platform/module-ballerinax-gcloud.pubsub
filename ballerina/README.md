@@ -4,6 +4,13 @@ Google Cloud Pub/Sub is an asynchronous messaging service that decouples service
 
 ### Key Features
 
+- Highly reliable and scalable asynchronous messaging
+- Support for both push and pull message delivery
+- Seamless integration with Google Cloud ecosystem
+- Secure communication with OAuth2 and IAM
+- Simplified management of topics and subscriptions
+- GraalVM compatible for native image builds
+
 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) is a fully managed, real-time messaging service that enables 
 asynchronous communication between independent applications. It provides a scalable, durable message ingestion and 
 delivery system that decouples services, allowing them to communicate reliably at scale. 
