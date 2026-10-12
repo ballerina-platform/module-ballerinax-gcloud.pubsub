@@ -124,6 +124,9 @@ dependencies {
     externalJars(group: 'com.google.protobuf', name: 'protobuf-java', version: "${protobufVersion}") {
         transitive = false
     }
+    externalJars(group: 'com.google.protobuf', name: 'protobuf-java-util', version: "${protobufVersion}") {
+        transitive = false
+    }
     externalJars(group: 'com.google.api', name: 'api-common', version: "${googleApiCommonVersion}") {
         transitive = false
     }
