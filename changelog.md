@@ -8,3 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial implementation of Google Cloud Pub/Sub connector
+
+### Changed
+- Updated the minimum required Ballerina distribution to 2201.14.0 (Swan Lake Update 14) with Java 25 support
+- Updated gRPC to 1.83.0, whose shaded Netty is on the 4.2 line, and Google Cloud Pub/Sub to 1.157.0 ([#9152](https://github.com/ballerina-platform/ballerina-library/issues/9152))
