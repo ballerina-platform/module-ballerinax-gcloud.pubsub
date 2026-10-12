@@ -7,205 +7,211 @@ keywords = ["pubsub", "google cloud", "messaging", "cloud", "gcp", "Vendor/Googl
 repository = "https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub"
 icon = "icon.png"
 license = ["Apache-2.0"]
-distribution = "2201.12.0"
+distribution = "2201.14.0"
 include = ["metadata/**"]
 
 [build-options]
 observabilityIncluded=true
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.ballerina.lib"
 artifactId = "gcloud.pubsub-native"
 version = "1.0.0"
 path = "../native/build/libs/gcloud.pubsub-native-1.0.0-SNAPSHOT.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.cloud"
 artifactId = "google-cloud-pubsub"
-version = "1.143.0"
-path = "./lib/google-cloud-pubsub-1.143.0.jar"
+version = "1.157.0"
+path = "./lib/google-cloud-pubsub-1.157.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api"
 artifactId = "gax"
-version = "2.71.0"
-path = "./lib/gax-2.71.0.jar"
+version = "2.87.0"
+path = "./lib/gax-2.87.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api"
 artifactId = "gax-grpc"
-version = "2.71.0"
-path = "./lib/gax-grpc-2.71.0.jar"
+version = "2.87.0"
+path = "./lib/gax-grpc-2.87.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.auth"
 artifactId = "google-auth-library-credentials"
-version = "1.40.0"
-path = "./lib/google-auth-library-credentials-1.40.0.jar"
+version = "1.54.0"
+path = "./lib/google-auth-library-credentials-1.54.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.auth"
 artifactId = "google-auth-library-oauth2-http"
-version = "1.40.0"
-path = "./lib/google-auth-library-oauth2-http-1.40.0.jar"
+version = "1.54.0"
+path = "./lib/google-auth-library-oauth2-http-1.54.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-netty-shaded"
-version = "1.76.0"
-path = "./lib/grpc-netty-shaded-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-netty-shaded-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-api"
-version = "1.76.0"
-path = "./lib/grpc-api-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-api-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-core"
-version = "1.76.0"
-path = "./lib/grpc-core-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-core-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-auth"
-version = "1.76.0"
-path = "./lib/grpc-auth-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-auth-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-stub"
-version = "1.76.0"
-path = "./lib/grpc-stub-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-stub-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-protobuf"
-version = "1.76.0"
-path = "./lib/grpc-protobuf-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-protobuf-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-protobuf-lite"
-version = "1.76.0"
-path = "./lib/grpc-protobuf-lite-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-protobuf-lite-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.grpc"
 artifactId = "grpc-context"
-version = "1.76.0"
-path = "./lib/grpc-context-1.76.0.jar"
+version = "1.83.0"
+path = "./lib/grpc-context-1.83.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api.grpc"
 artifactId = "proto-google-cloud-pubsub-v1"
-version = "1.110.1"
-path = "./lib/proto-google-cloud-pubsub-v1-1.110.1.jar"
+version = "1.157.0"
+path = "./lib/proto-google-cloud-pubsub-v1-1.157.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api.grpc"
 artifactId = "grpc-google-cloud-pubsub-v1"
-version = "1.110.1"
-path = "./lib/grpc-google-cloud-pubsub-v1-1.110.1.jar"
+version = "1.157.0"
+path = "./lib/grpc-google-cloud-pubsub-v1-1.157.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api.grpc"
 artifactId = "proto-google-common-protos"
-version = "2.43.0"
-path = "./lib/proto-google-common-protos-2.43.0.jar"
+version = "2.78.0"
+path = "./lib/proto-google-common-protos-2.78.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api.grpc"
 artifactId = "proto-google-iam-v1"
-version = "1.37.0"
-path = "./lib/proto-google-iam-v1-1.37.0.jar"
+version = "1.73.0"
+path = "./lib/proto-google-iam-v1-1.73.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.protobuf"
 artifactId = "protobuf-java"
-version = "4.33.0"
-path = "./lib/protobuf-java-4.33.0.jar"
+version = "4.33.6"
+path = "./lib/protobuf-java-4.33.6.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
+groupId = "com.google.protobuf"
+artifactId = "protobuf-java-util"
+version = "4.33.6"
+path = "./lib/protobuf-java-util-4.33.6.jar"
+
+[[platform.java25.dependency]]
 groupId = "com.google.api"
 artifactId = "api-common"
-version = "2.35.0"
-path = "./lib/api-common-2.35.0.jar"
+version = "2.70.0"
+path = "./lib/api-common-2.70.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.http-client"
 artifactId = "google-http-client"
-version = "1.44.2"
-path = "./lib/google-http-client-1.44.2.jar"
+version = "2.2.0"
+path = "./lib/google-http-client-2.2.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.opencensus"
 artifactId = "opencensus-api"
 version = "0.31.1"
 path = "./lib/opencensus-api-0.31.1.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.opencensus"
 artifactId = "opencensus-contrib-http-util"
 version = "0.31.1"
 path = "./lib/opencensus-contrib-http-util-0.31.1.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.guava"
 artifactId = "guava"
-version = "33.5.0-jre"
-path = "./lib/guava-33.5.0-jre.jar"
+version = "33.6.0-jre"
+path = "./lib/guava-33.6.0-jre.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.guava"
 artifactId = "failureaccess"
-version = "1.0.2"
-path = "./lib/failureaccess-1.0.2.jar"
+version = "1.0.3"
+path = "./lib/failureaccess-1.0.3.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "org.threeten"
 artifactId = "threetenbp"
 version = "1.7.2"
 path = "./lib/threetenbp-1.7.2.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.j2objc"
 artifactId = "j2objc-annotations"
-version = "3.0.0"
-path = "./lib/j2objc-annotations-3.0.0.jar"
+version = "3.1"
+path = "./lib/j2objc-annotations-3.1.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.code.findbugs"
 artifactId = "jsr305"
 version = "3.0.2"
 path = "./lib/jsr305-3.0.2.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.errorprone"
 artifactId = "error_prone_annotations"
-version = "2.41.0"
-path = "./lib/error_prone_annotations-2.41.0.jar"
+version = "2.50.0"
+path = "./lib/error_prone_annotations-2.50.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.api-client"
 artifactId = "google-api-client"
-version = "2.7.0"
-path = "./lib/google-api-client-2.7.0.jar"
+version = "2.7.2"
+path = "./lib/google-api-client-2.7.2.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.oauth-client"
 artifactId = "google-oauth-client"
-version = "1.36.0"
-path = "./lib/google-oauth-client-1.36.0.jar"
+version = "1.39.0"
+path = "./lib/google-oauth-client-1.39.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "com.google.http-client"
 artifactId = "google-http-client-gson"
-version = "1.44.2"
-path = "./lib/google-http-client-gson-1.44.2.jar"
+version = "2.2.0"
+path = "./lib/google-http-client-gson-2.2.0.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.perfmark"
 artifactId = "perfmark-api"
 version = "0.27.0"
