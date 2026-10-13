@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-gcloud.pubsub/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-gcloud.pubsub)
-[![Trivy](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/trivy-scan.yml)
+[![Security Scan](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/security-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/security-scan.yml)
 [![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/build-with-bal-test-graalvm.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/actions/workflows/build-with-bal-test-graalvm.yml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-gcloud.pubsub.svg)](https://github.com/ballerina-platform/module-ballerinax-gcloud.pubsub/commits/main)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -220,7 +220,7 @@ go to the [Ballerina library parent repository](https://github.com/ballerina-pla
 
 ### Set up the prerequisites
 
-* Download and install Java SE Development Kit (JDK) version 21 (from one of the following locations).
+* Download and install Java SE Development Kit (JDK) version 25 (from one of the following locations).
 
    * [Oracle](https://www.oracle.com/java/technologies/downloads/)
 

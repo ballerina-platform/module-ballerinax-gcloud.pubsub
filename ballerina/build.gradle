@@ -18,6 +18,13 @@
 
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.attributes.java.TargetJvmEnvironment
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
+
+abstract class BallerinaExecHelper {
+    @Inject abstract ExecOperations getExecOperations()
+}
 
 plugins {
     id 'io.ballerina.plugin'
@@ -50,8 +57,8 @@ ballerina {
     module = packageName
     langVersion = ballerinaLangVersion
     testCoverageParam = "--code-coverage --coverage-format=xml"
-    isConnector = true
-    platform = "java21"
+    connector = true
+    platform = "java25"
 }
 
 configurations {
@@ -115,6 +122,9 @@ dependencies {
         transitive = false
     }
     externalJars(group: 'com.google.protobuf', name: 'protobuf-java', version: "${protobufVersion}") {
+        transitive = false
+    }
+    externalJars(group: 'com.google.protobuf', name: 'protobuf-java-util', version: "${protobufVersion}") {
         transitive = false
     }
     externalJars(group: 'com.google.api', name: 'api-common', version: "${googleApiCommonVersion}") {
@@ -191,8 +201,9 @@ task updateTomlFiles {
 }
 
 task commitTomlFiles {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     doLast {
-        project.exec {
+        execHelper.execOperations.exec {
             ignoreExitValue true
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                 commandLine 'cmd', '/c', "git commit -m '[Automated] Update the native jar versions' Ballerina.toml Dependencies.toml"
