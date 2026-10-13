@@ -17,7 +17,7 @@ observabilityIncluded=true
 groupId = "io.ballerina.lib"
 artifactId = "gcloud.pubsub-native"
 version = "1.0.0"
-path = "../native/build/libs/gcloud.pubsub-native-1.0.0-SNAPSHOT.jar"
+path = "../native/build/libs/gcloud.pubsub-native-1.0.0.jar"
 
 [[platform.java25.dependency]]
 groupId = "com.google.cloud"
