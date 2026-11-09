@@ -160,8 +160,8 @@ path = "./lib/opencensus-contrib-http-util-0.31.1.jar"
 [[platform.java25.dependency]]
 groupId = "com.google.guava"
 artifactId = "guava"
-version = "33.6.0-jre"
-path = "./lib/guava-33.6.0-jre.jar"
+version = "33.7.2-jre"
+path = "./lib/guava-33.7.2-jre.jar"
 
 [[platform.java25.dependency]]
 groupId = "com.google.guava"
